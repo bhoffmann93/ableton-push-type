@@ -8,7 +8,7 @@
   </head>
   <body>
     <div id="push-container">
-      <!-- Push Controller UI -->
+      <!-- Top: Alley X & Y knobs -->
       <div id="push-ui">
         <div class="knobs-row">
           <div class="knob-container">
@@ -29,26 +29,29 @@
         </div>
       </div>
 
-      <!-- Button Knobs (left side) -->
-      <div id="button-knobs">
-        <div class="button-knob-container">
-          <button class="button-knob" id="grid-method-btn">
-            <span class="button-icon">⟳</span>
-          </button>
-          <span class="knob-label">Grid Method</span>
-          <span class="knob-value" id="grid-method-value">EQUAL</span>
+      <!-- Bottom row: Button knobs on left, canvas on right -->
+      <div id="bottom-row">
+        <!-- Button Knobs (left side) -->
+        <div id="button-knobs">
+          <div class="button-knob-container">
+            <button class="button-knob" id="grid-method-btn">
+              <span class="button-icon">⟳</span>
+            </button>
+            <span class="knob-label">Grid Method</span>
+            <span class="knob-value" id="grid-method-value">EQUAL</span>
+          </div>
+
+          <div class="button-knob-container">
+            <button class="button-knob" id="shaping-function-btn">
+              <span class="button-icon">∿</span>
+            </button>
+            <span class="knob-label">Ease Type</span>
+            <span class="knob-value" id="ease-type-value">parabola</span>
+          </div>
         </div>
 
-        <div class="button-knob-container">
-          <button class="button-knob" id="shaping-function-btn">
-            <span class="button-icon">∿</span>
-          </button>
-          <span class="knob-label">Ease Type</span>
-          <span class="knob-value" id="ease-type-value">parabola</span>
-        </div>
+        <div id="app"></div>
       </div>
-
-      <div id="app"></div>
     </div>
 
     <script type="module" src="/src/main.ts"></script>
