@@ -43,6 +43,38 @@ function updateKnobUI() {
   document.getElementById('knob2')?.style.setProperty('--rotation', `${knob2Angle}deg`);
   const knob2Value = document.getElementById('knob2-value');
   if (knob2Value) knob2Value.textContent = midiData.knob2.toFixed(2);
+
+  // Update Grid Method display
+  const gridMethodValue = document.getElementById('grid-method-value');
+  if (gridMethodValue) {
+    const methodNames = ['SHAPING', 'BEZIER', 'WAVE', 'EQUAL', 'STATIC', 'RANDOM'];
+    gridMethodValue.textContent = methodNames[GRID_CONFIG.gridMethod] || 'EQUAL';
+  }
+
+  // Update Ease Type display
+  const easeTypeValue = document.getElementById('ease-type-value');
+  if (easeTypeValue) {
+    const easeNames = [
+      'none',
+      'linear',
+      'linearPeak',
+      'step',
+      'parabola',
+      'sinc',
+      'parabola2',
+      'parabolaInv',
+      'quadratic',
+      'inQuart',
+      'inQuartInv',
+      'inQuartAnim',
+      'peak',
+      'peakInv',
+      'peakQuart',
+      'peakEdge',
+      'sin',
+    ];
+    easeTypeValue.textContent = easeNames[GRID_CONFIG.easeType] || 'parabola';
+  }
 }
 
 const sketch = new p5((p5Instance) => {
