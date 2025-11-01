@@ -10,7 +10,7 @@ import { Pane } from 'tweakpane';
 import * as EssentialPlugin from '@tweakpane/plugin-essentials';
 import CubicBezier from '@thednp/bezier-easing';
 import { TpChangeEvent } from '@tweakpane/core';
-import { WebMidi, Utilities } from 'webmidi';
+import { PushController, PushLEDColor } from './midi';
 
 //configs
 let debug = true;
@@ -76,168 +76,66 @@ PARAMS.tilesY += 1;
 // PARAMS.tilesY = PARAMS.tilesY % 2 === 0 ? PARAMS.tilesY : PARAMS.tilesY + 1;
 setRandomRowColDimensions();
 
-//midi
-const MIDI_INCREMENT = 0.05;
-const MIDI_INCREMENT_FINE = 0.001;
-const CLAMP_MIDI_01 = false;
-const CLAMP_MIDI_0_INFINITY = true;
-const INITIAL_MIDI_VALUE = 0;
-const midiData = {
-  knob1: PARAMS.alleyX,
-  knob2: PARAMS.alleyY,
-  knob3: INITIAL_MIDI_VALUE,
-  knob4: INITIAL_MIDI_VALUE,
-  knob5: INITIAL_MIDI_VALUE,
-  knob6: INITIAL_MIDI_VALUE,
-  knob7: INITIAL_MIDI_VALUE,
-  knob8: INITIAL_MIDI_VALUE,
-};
-let midiOutput;
-
-const initMidi = () => {
-  // Function triggered when WEBMIDI.js is ready
-  const onEnabled = () => {
-    // Display available MIDI input devices
-    if (WebMidi.inputs.length < 1) {
-      document.body.innerHTML += 'No device detected.';
-    } else {
-      WebMidi.inputs.forEach((device, index) => {
-        console.log(`${index}: ${device.name}`);
+// Initialize MIDI controller
+const pushController = new PushController(
+  {
+    knob1: PARAMS.alleyX,
+    knob2: PARAMS.alleyY,
+  },
+  {
+    onKnobChange: (knobIndex, value, allData) => {
+      if (knobIndex === 0) PARAMS.alleyX = allData.knob1;
+      if (knobIndex === 1) PARAMS.alleyY = allData.knob2;
+    },
+    onGridMethodChange: () => {
+      const methods = Object.values(METHOD).filter((method) => typeof method === 'number');
+      const currentIndex = methods.indexOf(gridMethod);
+      const nextIndex = (currentIndex + 1) % methods.length;
+      gridMethod = methods[nextIndex];
+      console.log(METHOD[nextIndex]);
+    },
+    onShapingFunctionChange: () => {
+      const ease = Object.values(EASE_TYPE).filter((ease) => typeof ease === 'number');
+      const currentIndex = ease.indexOf(easeType);
+      const nextIndex = (currentIndex + 1) % ease.length;
+      easeType = ease[nextIndex];
+      console.log('easeType: ', EASE_TYPE[nextIndex]);
+    },
+    onDeleteToggle: () => {
+      shouldSetButtonsToInitialShapeindex = !shouldSetButtonsToInitialShapeindex;
+    },
+    onDebugToggle: () => {
+      debug = !debug;
+    },
+    onReset: () => {
+      modules.forEach((row) => {
+        row.forEach((module) => {
+          module.shapeIndex = INITIAL_SHAPE_INDEX;
+        });
       });
-    }
-    const mySynth = WebMidi.getInputByName('Ableton Push User Port');
-    midiOutput = WebMidi.getOutputByName('Ableton Push User Port');
-    setAllButtonsLEDsOff();
-    console.log('midiOutput: ', midiOutput);
-    console.log('mySynth: ', mySynth);
-
-    mySynth.addListener(
-      'controlchange',
-      (e) => {
-        // document.body.innerHTML += `${e.note.name} <br>`;
-        // console.log(`${e.note.name}:`);
-        // console.log('data: ', e.data);
-        // console.log('rawValue: ', e.rawValue);
-        // console.log('e: ', e.note);
-        // console.log('e: ', e);
-        const increment = MIDI_INCREMENT;
-        // if (e.controllerNumber == 85 && e.rawValue == 127) increment = MIDI_INCREMENT_FINE;
-        // console.log('increment: ', increment);
-
-        //KNOBS
-        if (e.controller.number >= 71 && e.controller.number <= 78) {
-          const knobIndex = e.controller.number - 71;
-          const value = e.rawValue;
-          let normalizedMidiValue = Utilities.from7bitToFloat(value);
-
-          if (normalizedMidiValue <= 1 && normalizedMidiValue > 0.5) {
-            normalizedMidiValue = 1 - normalizedMidiValue;
-            // midiData[`knob${knobIndex + 1}`] -= mappedValue;
-            midiData[`knob${knobIndex + 1}`] -= increment;
-          } else if (normalizedMidiValue < 0.5 && normalizedMidiValue > 0) {
-            // midiData[`knob${knobIndex + 1}`] += mappedValue;
-
-            midiData[`knob${knobIndex + 1}`] += increment;
-          }
-          if (CLAMP_MIDI_01) {
-            midiData[`knob${knobIndex + 1}`] = clamp(midiData[`knob${knobIndex + 1}`], 0, 1);
-          }
-          if (CLAMP_MIDI_0_INFINITY) {
-            midiData[`knob${knobIndex + 1}`] = clamp(midiData[`knob${knobIndex + 1}`], 0, Infinity);
-          }
-          PARAMS.alleyX = midiData.knob1;
-          PARAMS.alleyY = midiData.knob2;
-          // console.log('knob:', midiData[`knob${knobIndex + 1}`]);
-          // console.log('midiData: ', midiData);
-          // console.log(`knob${knobIndex + 1}: `, mappedValue);
-        }
-
-        //KNOB LEFT 1 Grid Method
-        if (e.controller.number == 14) {
-          const methods = Object.values(METHOD).filter((method) => typeof method === 'number');
-          const currentIndex = methods.indexOf(gridMethod);
-          const nextIndex = (currentIndex + 1) % methods.length;
-          gridMethod = methods[nextIndex];
-          console.log(METHOD[nextIndex]);
-        }
-        //KNOB LEFT 2 Shaping Function
-        if (e.controller.number == 15) {
-          const ease = Object.values(EASE_TYPE).filter((ease) => typeof ease === 'number');
-          const currentIndex = ease.indexOf(easeType);
-          const nextIndex = (currentIndex + 1) % ease.length;
-          easeType = ease[nextIndex];
-          console.log('easeType: ', EASE_TYPE[nextIndex]);
-        }
-        //NEW "delete"
-        if (e.controller.number == 87) {
-          shouldSetButtonsToInitialShapeindex = !shouldSetButtonsToInitialShapeindex;
-        }
-        // RECORD Grid
-        if (e.controller.number == 86 && e.rawValue == 127) {
-          debug = !debug;
-        }
-        //PLAY Reset
-        if (e.controller.number == 85 && e.rawValue == 127) {
-          modules.forEach((row) => {
-            row.forEach((module) => {
-              module.shapeIndex = INITIAL_SHAPE_INDEX;
-            });
-            setAllButtonsLEDsOff();
-          });
-        }
-      },
-      { channels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16] }
-    );
-
-    mySynth.addListener('noteon', (e) => {
-      // console.log(`Note on: ${e.note.name}${e.note.octave} Velocity: ${e.velocity}`);
-      // console.log('data: ', e.data);
-
-      //BUTTONS
+    },
+    onButtonPress: (row, col) => {
       if (!modules) return;
-      if (e.data[1] >= 36 && e.data[1] <= 99) {
-        const controllerNumber = e.data[1];
-        const row = 7 - Math.floor((controllerNumber - 36) / 8);
-        const col = (controllerNumber - 36) % 8;
-        //cycle through shapes
-        if (shouldSetButtonsToInitialShapeindex) modules[row][col].shapeIndex = INITIAL_SHAPE_INDEX;
-        else modules[row][col].shapeIndex = (modules[row][col].shapeIndex + 1) % AMOUNT_OF_SHAPES; // Assuming there are 11 shapes
-        // console.log('modules[row][col].shapeIndex: ', modules[row][col].shapeIndex);
-        // console.log('', modules[row][col]);
 
-        const buttonId = e.data[1];
-        if (modules[row][col].shapeIndex != INITIAL_SHAPE_INDEX) {
-          // BLACK = 0
-          // WHITE_HI = 3
-          // RED_HI = 120
-          // ORANGE_HI = 60
-          // YELLOW_HI = 13
-          // GREEN_HI = 21
-          // CYAN_HI = 33
-          // BLUE_HI = 45
-          // INDIGO_HI = 49
-          // VIOLET_HI = 53
-          // const buttonColor = colors[modules[row][col].shapeIndex % colors.length];
-          const buttonColor = 45;
-          midiOutput.sendNoteOn(buttonId, { rawAttack: buttonColor, channel: 1 }); // Channel 1 for User Mode
-        } else {
-          midiOutput.sendNoteOff(buttonId, { channel: 1 });
-        }
+      // Cycle through shapes
+      if (shouldSetButtonsToInitialShapeindex) {
+        modules[row][col].shapeIndex = INITIAL_SHAPE_INDEX;
+      } else {
+        modules[row][col].shapeIndex = (modules[row][col].shapeIndex + 1) % AMOUNT_OF_SHAPES;
       }
-    });
 
-    function setAllButtonsLEDsOff() {
-      for (let i = 36; i <= 99; i++) {
-        midiOutput.sendNoteOff(i, { channel: 1 });
+      // Update LED
+      const buttonId = 36 + (7 - row) * 8 + col;
+      if (modules[row][col].shapeIndex !== INITIAL_SHAPE_INDEX) {
+        pushController.setButtonLED(buttonId, PushLEDColor.BLUE_HI, true);
+      } else {
+        pushController.setButtonLED(buttonId, PushLEDColor.BLACK, false);
       }
-    }
-  };
+    },
+  }
+);
 
-  WebMidi.enable()
-    .then(onEnabled)
-    .catch((err) => alert(err));
-};
-initMidi();
+pushController.initialize().catch((err) => console.error('MIDI initialization failed:', err));
 
 const pane = new Pane();
 pane.registerPlugin(EssentialPlugin);
