@@ -6,10 +6,7 @@ import { factory } from './factory';
 import { peakify, clamp, map } from './utils/utils';
 import { EASE_TYPE, METHOD, GridModule, EASE_MIRROR_TYPE } from './types';
 import { easing } from 'ts-easing';
-import { Pane } from 'tweakpane';
-import * as EssentialPlugin from '@tweakpane/plugin-essentials';
 import CubicBezier from '@thednp/bezier-easing';
-import { TpChangeEvent } from '@tweakpane/core';
 import { PushController, PushLEDColor } from './midi';
 
 //configs
@@ -30,8 +27,8 @@ const waveSpeed = 0.025;
 const speed = 0.0125;
 
 const bezierValues = [0.5, 0, 0.5, 1];
-let easeCubicBezierX = new CubicBezier(...bezierValues);
-let easeCubicBezierY = new CubicBezier(...bezierValues);
+const easeCubicBezierX = new CubicBezier(...bezierValues);
+const easeCubicBezierY = new CubicBezier(...bezierValues);
 
 // const greyDark = '#4E444A';
 // const greyLight = '#EFEDEF';
@@ -136,75 +133,6 @@ const pushController = new PushController(
 );
 
 pushController.initialize().catch((err) => console.error('MIDI initialization failed:', err));
-
-const pane = new Pane();
-pane.registerPlugin(EssentialPlugin);
-const folder = pane.addFolder({
-  title: 'Config',
-});
-folder
-  .addInput(PARAMS, 'tilesX', {
-    min: 2,
-    max: 50,
-    step: 2,
-  })
-  //@ts-ignore
-  .on('change', (e: TpChangeEvent) => {
-    PARAMS.tilesX = e.value;
-    PARAMS.tilesX = PARAMS.tilesX % 2 === 0 ? PARAMS.tilesX : PARAMS.tilesX + 1;
-    setRandomRowColDimensions();
-  });
-folder
-  .addInput(PARAMS, 'tilesY', {
-    min: 2,
-    max: 50,
-    step: 2,
-  })
-  //@ts-ignore
-  .on('change', (e: TpChangeEvent) => {
-    PARAMS.tilesY = e.value;
-    PARAMS.tilesY = PARAMS.tilesY % 2 === 0 ? PARAMS.tilesY : PARAMS.tilesY + 1;
-    setRandomRowColDimensions();
-  });
-folder.addInput(PARAMS, 'alleyX', {
-  min: 0,
-  max: 0.5,
-  step: 0.01,
-});
-folder.addInput(PARAMS, 'alleyY', {
-  min: 0,
-  max: 0.5,
-  step: 0.01,
-});
-
-folder
-  .addBlade({
-    view: 'cubicbezier',
-    value: bezierValues,
-    // expanded: true,
-    label: 'X',
-    picker: 'inline',
-  })
-  //@ts-ignore
-  .on('change', (e: TpChangeEvent) => {
-    const [x1, y1, x2, y2] = e.value.comps_;
-    easeCubicBezierX = new CubicBezier(x1, y1, x2, y2);
-  });
-folder
-  .addBlade({
-    view: 'cubicbezier',
-    value: bezierValues,
-    // expanded: true,
-    label: 'Y',
-    // picker: 'inline',
-  })
-
-  //@ts-ignore
-  .on('change', (e: TpChangeEvent) => {
-    const [x1, y1, x2, y2] = e.value.comps_;
-    easeCubicBezierY = new CubicBezier(x1, y1, x2, y2);
-  });
-pane.hidden = false;
 
 const sketch = new p5((p5Instance) => {
   const p = p5Instance as unknown as p5;
@@ -555,9 +483,5 @@ document.addEventListener('keydown', (e) => {
 
   if (e.key === ' ') {
     sketch.noLoop();
-  }
-
-  if (e.key === 'g') {
-    pane.hidden = !pane.hidden;
   }
 });
