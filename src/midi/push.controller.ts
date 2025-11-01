@@ -1,15 +1,19 @@
 import { WebMidi, Utilities, Input, Output } from 'webmidi';
-import { MidiData, MidiCallbacks, PushKnob, PushButton, PushLEDColor } from '../types/midi.types';
+import { MidiData, PushKnob, PushButton, PushLEDColor } from '../types/midi.types';
 import { PUSH_CONFIG, PUSH_BUTTON_RANGE, MIDI_CHANNELS } from '../config/push.config';
 import { clamp } from '../utils/utils';
+import { Grid } from '../grid/grid';
+import { GRID_CONFIG } from '../config/grid.config';
+import { METHOD, EASE_TYPE } from '../types/types';
 
 export class PushController {
   private midiInput: Input | null = null;
   private midiOutput: Output | null = null;
   private midiData: MidiData;
-  private callbacks: MidiCallbacks;
+  private grid: Grid;
 
-  constructor(initialData?: Partial<MidiData>, callbacks?: MidiCallbacks) {
+  constructor(grid: Grid, initialData?: Partial<MidiData>) {
+    this.grid = grid;
     this.midiData = {
       knob1: initialData?.knob1 ?? PUSH_CONFIG.initialValue,
       knob2: initialData?.knob2 ?? PUSH_CONFIG.initialValue,
@@ -20,7 +24,6 @@ export class PushController {
       knob7: initialData?.knob7 ?? PUSH_CONFIG.initialValue,
       knob8: initialData?.knob8 ?? PUSH_CONFIG.initialValue,
     };
-    this.callbacks = callbacks || {};
   }
 
   async initialize(): Promise<void> {
@@ -80,22 +83,22 @@ export class PushController {
     // Handle buttons
     switch (controllerNumber) {
       case PushButton.KNOB_LEFT_1:
-        this.callbacks.onGridMethodChange?.();
+        this.cycleGridMethod();
         break;
       case PushButton.KNOB_LEFT_2:
-        this.callbacks.onShapingFunctionChange?.();
+        this.cycleShapingFunction();
         break;
       case PushButton.NEW:
-        this.callbacks.onDeleteToggle?.();
+        GRID_CONFIG.shouldSetButtonsToInitialShapeindex = !GRID_CONFIG.shouldSetButtonsToInitialShapeindex;
         break;
       case PushButton.RECORD:
         if (e.rawValue === 127) {
-          this.callbacks.onDebugToggle?.();
+          GRID_CONFIG.debug = !GRID_CONFIG.debug;
         }
         break;
       case PushButton.PLAY:
         if (e.rawValue === 127) {
-          this.callbacks.onReset?.();
+          this.grid.resetAllShapes();
           this.setAllButtonsOff();
         }
         break;
@@ -123,7 +126,9 @@ export class PushController {
       this.midiData[knobKey] = clamp(this.midiData[knobKey], 0, Infinity);
     }
 
-    this.callbacks.onKnobChange?.(knobIndex, this.midiData[knobKey], this.midiData);
+    // Update GRID_CONFIG based on knob
+    if (knobIndex === 0) GRID_CONFIG.alleyX = this.midiData.knob1;
+    if (knobIndex === 1) GRID_CONFIG.alleyY = this.midiData.knob2;
   }
 
   private handleNoteOn(e: any): void {
@@ -133,8 +138,44 @@ export class PushController {
       const row = 7 - Math.floor((noteNumber - PUSH_BUTTON_RANGE.min) / 8);
       const col = (noteNumber - PUSH_BUTTON_RANGE.min) % 8;
 
-      this.callbacks.onButtonPress?.(row, col);
+      this.handleGridButtonPress(row, col, noteNumber);
     }
+  }
+
+  private handleGridButtonPress(row: number, col: number, noteNumber: number): void {
+    const module = this.grid.getModule(row, col);
+    if (!module) return;
+
+    // Cycle through shapes
+    if (GRID_CONFIG.shouldSetButtonsToInitialShapeindex) {
+      this.grid.setModuleShapeIndex(row, col, this.grid.INITIAL_SHAPE_INDEX);
+    } else {
+      this.grid.cycleShapeIndex(row, col);
+    }
+
+    // Update LED
+    const updatedModule = this.grid.getModule(row, col);
+    if (updatedModule && updatedModule.shapeIndex !== this.grid.INITIAL_SHAPE_INDEX) {
+      this.setButtonLED(noteNumber, PushLEDColor.BLUE_HI, true);
+    } else {
+      this.setButtonLED(noteNumber, PushLEDColor.BLACK, false);
+    }
+  }
+
+  private cycleGridMethod(): void {
+    const methods = Object.values(METHOD).filter((method) => typeof method === 'number');
+    const currentIndex = methods.indexOf(GRID_CONFIG.gridMethod);
+    const nextIndex = (currentIndex + 1) % methods.length;
+    GRID_CONFIG.gridMethod = methods[nextIndex];
+    console.log('Grid Method:', METHOD[methods[nextIndex]]);
+  }
+
+  private cycleShapingFunction(): void {
+    const easeTypes = Object.values(EASE_TYPE).filter((ease) => typeof ease === 'number');
+    const currentIndex = easeTypes.indexOf(GRID_CONFIG.easeType);
+    const nextIndex = (currentIndex + 1) % easeTypes.length;
+    GRID_CONFIG.easeType = easeTypes[nextIndex];
+    console.log('Ease Type:', EASE_TYPE[easeTypes[nextIndex]]);
   }
 
   setButtonLED(buttonId: number, color: PushLEDColor, on = true): void {

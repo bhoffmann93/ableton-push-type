@@ -98,9 +98,9 @@ export class ShapeRenderer {
     p.textStyle(p.NORMAL);
     p.noStroke();
     p.fill(255, 0, 0);
-    p.textSize(18);
-    p.textAlign(p.CENTER, p.CENTER);
-    p.text(iX + ' ' + iY, tileW * 0.5, tileH * 0.5);
+    // p.textSize(18);
+    // p.textAlign(p.CENTER, p.CENTER);
+    // p.text(iX + ' ' + iY, tileW * 0.5, tileH * 0.5);
     p.pop();
   }
 
