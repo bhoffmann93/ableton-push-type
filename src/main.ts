@@ -1,6 +1,7 @@
 // @ts-nocheck
 import p5 from 'p5';
 import './style.css';
+import { getDateAndTimeString } from './utils/utils';
 import { easing } from 'ts-easing';
 import CubicBezier from '@thednp/bezier-easing';
 import { PushController } from './midi';
@@ -26,6 +27,23 @@ const pushController = new PushController(grid, {
 });
 
 pushController.initialize().catch((err) => console.error('MIDI initialization failed:', err));
+
+// Update UI knobs
+function updateKnobUI() {
+  const midiData = pushController.getMidiData();
+
+  // Update knob 1
+  const knob1Angle = midiData.knob1 * 270 - 135; // Map 0-1 to -135° to 135°
+  document.getElementById('knob1')?.style.setProperty('--rotation', `${knob1Angle}deg`);
+  const knob1Value = document.getElementById('knob1-value');
+  if (knob1Value) knob1Value.textContent = midiData.knob1.toFixed(2);
+
+  // Update knob 2
+  const knob2Angle = midiData.knob2 * 270 - 135;
+  document.getElementById('knob2')?.style.setProperty('--rotation', `${knob2Angle}deg`);
+  const knob2Value = document.getElementById('knob2-value');
+  if (knob2Value) knob2Value.textContent = midiData.knob2.toFixed(2);
+}
 
 const sketch = new p5((p5Instance) => {
   const p = p5Instance as unknown as p5;
@@ -62,6 +80,9 @@ const sketch = new p5((p5Instance) => {
     });
 
     grid.draw(p, primaryColor, secondaryColor, speed, GRID_CONFIG.debug);
+
+    // Update knob UI every frame
+    updateKnobUI();
   };
 }, document.getElementById('app') as HTMLElement);
 

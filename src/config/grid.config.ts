@@ -9,7 +9,7 @@ export const GRID_CONFIG = {
   alleyX: 0.1,
   alleyY: 0.1,
   colorPair: COLOR_PAIRS.DARK_GREY_LIGHT_GREY,
-  swapColors: true,
+  swapColors: false,
   debug: true,
   gridMethod: METHOD.EQUAL as METHOD,
   easeType: EASE_TYPE.parabola as EASE_TYPE,

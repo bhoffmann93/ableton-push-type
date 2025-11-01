@@ -1,3 +1,10 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: #1a1a1a;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -6,5 +13,80 @@
   color: #2c3e50;
   position: absolute;
   top: 10%;
-  left: 1%;
+  left: 250px; /* Position canvas to the right of the knobs */
+}
+
+/* Push UI */
+#push-ui {
+  position: absolute;
+  top: 10%;
+  left: 20px;
+  background: #1a1a1a;
+  padding: 20px;
+  /* border-radius: 8px; */
+  /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); */
+}
+
+.knobs-row {
+  display: flex;
+  gap: 30px;
+}
+
+.knob-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.knob {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5), inset -2px -2px 5px rgba(255, 255, 255, 0.05);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+}
+
+.knob::before {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #0f0f0f;
+}
+
+.knob-indicator {
+  position: absolute;
+  width: 4px;
+  height: 24px;
+  background: linear-gradient(to bottom, #4a9eff, #2d7bd4);
+  border-radius: 2px;
+  top: 8px;
+  left: 28px;
+  transform-origin: center 22px;
+  transform: rotate(var(--rotation));
+  transition: transform 0.1s ease-out;
+  z-index: 1;
+  box-shadow: 0 0 8px rgba(74, 158, 255, 0.6);
+}
+
+.knob-label {
+  color: #888;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.knob-value {
+  color: #4a9eff;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
 }
