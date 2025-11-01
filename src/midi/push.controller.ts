@@ -1,6 +1,6 @@
 import { WebMidi, Utilities, Input, Output } from 'webmidi';
-import { MidiData, MidiCallbacks, PushKnob, PushButton, PushLEDColor } from './midi.types';
-import { PUSH_CONFIG, PUSH_BUTTON_RANGE, MIDI_CHANNELS } from './push.config';
+import { MidiData, MidiCallbacks, PushKnob, PushButton, PushLEDColor } from '../types/midi.types';
+import { PUSH_CONFIG, PUSH_BUTTON_RANGE, MIDI_CHANNELS } from '../config/push.config';
 import { clamp } from '../utils/utils';
 
 export class PushController {

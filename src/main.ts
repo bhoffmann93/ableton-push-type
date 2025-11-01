@@ -1,13 +1,14 @@
 // @ts-nocheck
 import p5 from 'p5';
 import './style.css';
-import { getDateAndTimeString } from './utils/utils';
+import { peakify, clamp, map, getDateAndTimeString } from './utils/utils';
+import { HSLAToRGBA } from './utils/color.utils';
 import { factory } from './factory';
-import { peakify, clamp, map } from './utils/utils';
-import { EASE_TYPE, METHOD, GridModule, EASE_MIRROR_TYPE } from './types';
+import { EASE_TYPE, METHOD, GridModule, EASE_MIRROR_TYPE } from './types/types';
 import { easing } from 'ts-easing';
 import CubicBezier from '@thednp/bezier-easing';
 import { PushController, PushLEDColor } from './midi';
+import { GRID_CONFIG } from './config/grid.config';
 
 //configs
 let debug = true;
@@ -30,12 +31,8 @@ const bezierValues = [0.5, 0, 0.5, 1];
 const easeCubicBezierX = new CubicBezier(...bezierValues);
 const easeCubicBezierY = new CubicBezier(...bezierValues);
 
-// const greyDark = '#4E444A';
-// const greyLight = '#EFEDEF';
-const blue = '#0F5AEC';
-const grey = '#312926';
-const primaryColor = blue;
-const secondaryColor = grey;
+const primaryColor = GRID_CONFIG.swapColors ? GRID_CONFIG.colorPair[0] : GRID_CONFIG.colorPair[1];
+const secondaryColor = GRID_CONFIG.swapColors ? GRID_CONFIG.colorPair[1] : GRID_CONFIG.colorPair[0];
 
 const scaleFactor = { x: 1, y: 1 };
 const scaleFactors: { x: number; y: number }[] = [];
@@ -44,20 +41,14 @@ const randomRowHeights: number[] = [];
 let randomColumnWidthsSum = 0;
 let randomRowHeightsSum = 0;
 
-const PARAMS = {
-  tilesX: 8,
-  tilesY: 8,
-  alleyX: 0.1,
-  alleyY: 0.1,
-};
 const modules: GridModule[][] = [];
 const INITIAL_SHAPE_INDEX = 0;
 const AMOUNT_OF_SHAPES = 15;
 let shouldSetButtonsToInitialShapeindex = false;
 
-for (let iY = 0; iY < PARAMS.tilesY; iY++) {
+for (let iY = 0; iY < GRID_CONFIG.tilesY; iY++) {
   const rowModules = [];
-  for (let iX = 0; iX < PARAMS.tilesX; iX++) {
+  for (let iX = 0; iX < GRID_CONFIG.tilesX; iX++) {
     rowModules.push({
       w: 0,
       h: 0,
@@ -67,22 +58,22 @@ for (let iY = 0; iY < PARAMS.tilesY; iY++) {
   modules.push(rowModules);
 }
 
-PARAMS.tilesX += 1;
-PARAMS.tilesY += 1;
-// PARAMS.tilesX = PARAMS.tilesX % 2 === 0 ? PARAMS.tilesX : PARAMS.tilesX + 1;
-// PARAMS.tilesY = PARAMS.tilesY % 2 === 0 ? PARAMS.tilesY : PARAMS.tilesY + 1;
+GRID_CONFIG.tilesX += 1;
+GRID_CONFIG.tilesY += 1;
+// GRID_CONFIG.tilesX = GRID_CONFIG.tilesX % 2 === 0 ? GRID_CONFIG.tilesX : GRID_CONFIG.tilesX + 1;
+// GRID_CONFIG.tilesY = GRID_CONFIG.tilesY % 2 === 0 ? GRID_CONFIG.tilesY : GRID_CONFIG.tilesY + 1;
 setRandomRowColDimensions();
 
 // Initialize MIDI controller
 const pushController = new PushController(
   {
-    knob1: PARAMS.alleyX,
-    knob2: PARAMS.alleyY,
+    knob1: GRID_CONFIG.alleyX,
+    knob2: GRID_CONFIG.alleyY,
   },
   {
     onKnobChange: (knobIndex, value, allData) => {
-      if (knobIndex === 0) PARAMS.alleyX = allData.knob1;
-      if (knobIndex === 1) PARAMS.alleyY = allData.knob2;
+      if (knobIndex === 0) GRID_CONFIG.alleyX = allData.knob1;
+      if (knobIndex === 1) GRID_CONFIG.alleyY = allData.knob2;
     },
     onGridMethodChange: () => {
       const methods = Object.values(METHOD).filter((method) => typeof method === 'number');
@@ -162,7 +153,7 @@ function setRandomRowColDimensions() {
   // randomColumnWidths[0] = 0;
   // randomRowHeights[0] = 0;
 
-  for (let iX = 1; iX < PARAMS.tilesX; iX++) {
+  for (let iX = 1; iX < GRID_CONFIG.tilesX; iX++) {
     if (iX % 2 === 0 && iX >= 1) {
       randomColumnWidths[iX] = 0.1;
 
@@ -172,7 +163,7 @@ function setRandomRowColDimensions() {
       randomColumnWidthsSum += randomColumnWidths[iX];
     }
   }
-  for (let iY = 1; iY < PARAMS.tilesY; iY++) {
+  for (let iY = 1; iY < GRID_CONFIG.tilesY; iY++) {
     if (iY % 2 === 0 && iY >= 1) {
       randomRowHeights[iY] = 0.1;
     } else {
@@ -183,32 +174,32 @@ function setRandomRowColDimensions() {
 }
 
 function calcGrid(p: p5, time: number) {
-  const tileWo = p.width / PARAMS.tilesX;
-  const tileHo = p.height / PARAMS.tilesY;
+  const tileWo = p.width / GRID_CONFIG.tilesX;
+  const tileHo = p.height / GRID_CONFIG.tilesY;
   let sumWidth = 0;
   let sumHeight = 0;
 
-  for (let iY = 1; iY < PARAMS.tilesY; iY++) {
+  for (let iY = 1; iY < GRID_CONFIG.tilesY; iY++) {
     const rowModules = [];
 
     const freqY = 0.3;
     const ampWaveY = 0.7; //0-1
     const waveY = ampWaveY * Math.sin(iY * freqY + p.frameCount * 0.01) * 0.5 + 0.5;
 
-    for (let iX = 1; iX < PARAMS.tilesX; iX++) {
-      const w = iX / PARAMS.tilesX;
-      const h = iY / PARAMS.tilesY;
+    for (let iX = 1; iX < GRID_CONFIG.tilesX; iX++) {
+      const w = iX / GRID_CONFIG.tilesX;
+      const h = iY / GRID_CONFIG.tilesY;
       let eased = { w: 0, h: 0 };
       const aspect = tileWo / tileHo;
 
       switch (gridMethod) {
         case METHOD.RANDOM:
-          eased.w = isAlley(iX) ? PARAMS.alleyX : randomColumnWidths[iX];
-          eased.h = isAlley(iY) ? PARAMS.alleyX * aspect : randomRowHeights[iY];
+          eased.w = isAlley(iX) ? GRID_CONFIG.alleyX : randomColumnWidths[iX];
+          eased.h = isAlley(iY) ? GRID_CONFIG.alleyX * aspect : randomRowHeights[iY];
           break;
         case METHOD.STATIC_ALLEY:
-          eased.w = isAlley(iX) ? PARAMS.alleyX : 1;
-          eased.h = isAlley(iY) ? PARAMS.alleyX * aspect : 1;
+          eased.w = isAlley(iX) ? GRID_CONFIG.alleyX : 1;
+          eased.h = isAlley(iY) ? GRID_CONFIG.alleyX * aspect : 1;
           break;
         case METHOD.EQUAL:
           eased.w = 1;
@@ -216,8 +207,8 @@ function calcGrid(p: p5, time: number) {
           break;
         case METHOD.SHAPING_FUNCTION:
           const easedOut = factory(w, h, time, easeType, mirrorInput);
-          eased.w = isAlley(iX) ? PARAMS.alleyX : easedOut.w;
-          eased.h = isAlley(iY) ? PARAMS.alleyY : easedOut.h;
+          eased.w = isAlley(iX) ? GRID_CONFIG.alleyX : easedOut.w;
+          eased.h = isAlley(iY) ? GRID_CONFIG.alleyY : easedOut.h;
           break;
         case METHOD.BEZIER:
           //@ts-ignore
@@ -248,10 +239,10 @@ function calcGrid(p: p5, time: number) {
           }
 
           if (isAlley(iX)) {
-            // waveX = PARAMS.alleyX;
+            // waveX = GRID_CONFIG.alleyX;
           }
           if (isAlley(iY)) {
-            // waveY = PARAMS.alleyY;
+            // waveY = GRID_CONFIG.alleyY;
           }
           // eased = {
           //   w: waveX,
@@ -297,19 +288,19 @@ function calcGrid(p: p5, time: number) {
 }
 
 function drawGrid(p: p5) {
-  p.background(secondaryColor);
-  p.fill(primaryColor);
+  p.background(primaryColor);
+  p.fill(secondaryColor);
   p.noStroke();
 
-  const tileWo = p.width / PARAMS.tilesX;
-  const tileHo = p.height / PARAMS.tilesY;
+  const tileWo = p.width / GRID_CONFIG.tilesX;
+  const tileHo = p.height / GRID_CONFIG.tilesY;
 
   let tempPosY = 0;
-  for (let iY = 1; iY < PARAMS.tilesY; iY++) {
+  for (let iY = 1; iY < GRID_CONFIG.tilesY; iY++) {
     let tempPosX = 0;
     let tempHeight = 0;
 
-    for (let iX = 1; iX < PARAMS.tilesX; iX++) {
+    for (let iX = 1; iX < GRID_CONFIG.tilesX; iX++) {
       const { w, h, shapeIndex } = modules[iY - 1][iX - 1];
       // console.log('modules: ', modules);
       const scaleFactorN = scaleFactors[iY - 1];

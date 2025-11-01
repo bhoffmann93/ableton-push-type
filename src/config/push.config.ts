@@ -1,4 +1,4 @@
-import { MidiConfig } from './midi.types';
+import { MidiConfig } from '../types/midi.types';
 
 export const PUSH_CONFIG: MidiConfig = {
   increment: 0.05,

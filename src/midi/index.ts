@@ -1,3 +1,3 @@
-export * from './midi.types';
-export * from './push.config';
+export * from '../types/midi.types';
+export * from '../config/push.config';
 export * from './push.controller';
