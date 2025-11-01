@@ -91,11 +91,6 @@
   resolved "https://registry.npmjs.org/@tweakpane/core/-/core-1.1.6.tgz"
   integrity sha512-/pDdbdXHI1xv2763K/45sVJ2IrwUDZ5rklbfgb70EZ4wjnAMrWNoYJ20Z3QDS6N13IEkde50FKokFre35rSW1Q==
 
-"@tweakpane/plugin-essentials@^0.1.8":
-  version "0.1.8"
-  resolved "https://registry.npmjs.org/@tweakpane/plugin-essentials/-/plugin-essentials-0.1.8.tgz"
-  integrity sha512-tWBXzWafcjiq+/XvZnOgSz0B+YikwZj0NnqiZPba+AwTiDqNk/6PU3so0Bs0qyxLIJKT/+AUPRL8jBmtERYzwA==
-
 "@types/json-schema@^7.0.9":
   version "7.0.11"
   resolved "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.11.tgz"
@@ -548,6 +543,16 @@ flatted@^3.1.0:
   version "3.2.7"
   resolved "https://registry.npmjs.org/flatted/-/flatted-3.2.7.tgz"
   integrity sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==
+
+float-hsl2rgb@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.npmjs.org/float-hsl2rgb/-/float-hsl2rgb-1.0.2.tgz"
+  integrity sha512-O9YGK/8X0tl2GpT9SVk9wSPTVv1IkAjikhKdHkbHbC7X9aX+64i3HPeWX7zwStDuO7T3KIamHC4B16T80mMeXA==
+
+float-rgb2hsl@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/float-rgb2hsl/-/float-rgb2hsl-1.0.1.tgz"
+  integrity sha512-sdMM9qC3IRI/M7J1htyVfNFD4pCi6MIznXTXTq3/h4C+qtMz6AMTRHwcuD6ScswVXMS/F+0B5DNn5HINQK0iOA==
 
 fs.realpath@^1.0.0:
   version "1.0.0"
@@ -1014,11 +1019,6 @@ tsutils@^3.21.0:
   integrity sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==
   dependencies:
     tslib "^1.8.1"
-
-tweakpane@^3.1.4, tweakpane@^3.1.7:
-  version "3.1.7"
-  resolved "https://registry.npmjs.org/tweakpane/-/tweakpane-3.1.7.tgz"
-  integrity sha512-8JF0Ri3cPTv/tUwrb28FBalB6XTW+m3pm2BUMz8gXkvppMjSQ89RMOF/jLdaWhrkRnSayPp5WX9lTDXNqRgK5Q==
 
 type-check@^0.4.0, type-check@~0.4.0:
   version "0.4.0"

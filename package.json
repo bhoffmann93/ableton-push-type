@@ -18,10 +18,10 @@
   },
   "dependencies": {
     "@thednp/bezier-easing": "^1.0.3",
-    "@tweakpane/plugin-essentials": "^0.1.8",
+    "float-hsl2rgb": "^1.0.2",
+    "float-rgb2hsl": "^1.0.1",
     "p5": "^1.3.1",
     "ts-easing": "^0.2.0",
-    "tweakpane": "^3.1.7",
     "webmidi": "^3.1.11"
   }
 }

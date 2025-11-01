@@ -19,4 +19,5 @@ After starting a project...
 
 1. `yarn run dev`
 2. Open `http://localhost:3000` in a browser
-2. Make edits to `src/main.ts`
+3. Make edits to `src/main.ts`
+   ˘
