@@ -32,8 +32,8 @@ body {
   background: #1a1a1a;
   padding: 20px;
   padding-left: 0;
-  /* Button knobs width calculation: 2 buttons (60px each) + gap (30px) + padding (40px) = 190px + bottom-row gap (20px) = 210px */
-  margin-left: calc(60px + 30px + 60px + 40px + 20px); /* 210px total */
+  /* Button knobs width calculation: 2 containers (100px each) + gap (30px) + padding (40px) = 270px + bottom-row gap (20px) = 290px */
+  margin-left: calc(100px + 30px + 100px + 40px + 20px); /* 290px total */
   /* border-radius: 8px; */
   /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); */
 }
