@@ -1,8 +1,6 @@
 // @ts-nocheck
 import p5 from 'p5';
 import './style.css';
-import { getDateAndTimeString } from './utils/utils';
-import { EASE_MIRROR_TYPE } from './types/types';
 import { easing } from 'ts-easing';
 import CubicBezier from '@thednp/bezier-easing';
 import { PushController } from './midi';
@@ -10,8 +8,6 @@ import { GRID_CONFIG } from './config/grid.config';
 import { Grid } from './grid';
 
 // Constants
-const mirrorInput = EASE_MIRROR_TYPE.none as EASE_MIRROR_TYPE;
-const selectedShape = 6;
 const waveSpeed = 0.025;
 const speed = 0.0125;
 
@@ -43,7 +39,7 @@ const sketch = new p5((p5Instance) => {
       alleyY: GRID_CONFIG.alleyY,
       method: GRID_CONFIG.gridMethod,
       easeType: GRID_CONFIG.easeType,
-      mirrorInput,
+      mirrorInput: GRID_CONFIG.mirrorInput,
       easeCubicBezierX,
       easeCubicBezierY,
     });
@@ -51,7 +47,7 @@ const sketch = new p5((p5Instance) => {
 
   p.draw = () => {
     let time = Math.sin(p.frameCount * waveSpeed) * 0.5 + 0.5;
-    // time = easing.outSine(time);
+    time = easing.outSine(time);
 
     grid.calculate(p, time, {
       tilesX: grid.getTilesX(),
@@ -60,12 +56,12 @@ const sketch = new p5((p5Instance) => {
       alleyY: GRID_CONFIG.alleyY,
       method: GRID_CONFIG.gridMethod,
       easeType: GRID_CONFIG.easeType,
-      mirrorInput,
+      mirrorInput: GRID_CONFIG.mirrorInput,
       easeCubicBezierX,
       easeCubicBezierY,
     });
 
-    grid.draw(p, primaryColor, secondaryColor, selectedShape, speed, GRID_CONFIG.debug);
+    grid.draw(p, primaryColor, secondaryColor, speed, GRID_CONFIG.debug);
   };
 }, document.getElementById('app') as HTMLElement);
 

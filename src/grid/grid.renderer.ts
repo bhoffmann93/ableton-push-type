@@ -18,7 +18,6 @@ export class GridRenderer {
     tilesY: number,
     primaryColor: string,
     secondaryColor: string,
-    selectedShape: number,
     speed: number,
     debug: boolean
   ): void {
@@ -45,16 +44,10 @@ export class GridRenderer {
           y: tempPosY,
         };
 
-        let wave = Math.sin(p.frameCount * speed * pos.y * 0.01);
-        wave = (wave * 0.5 + 0.5) * 5;
-        wave = p.map(wave, 0, 4, 2, 6);
-        wave = selectedShape;
-
-        const currentShapeIndex = shapeIndex !== undefined ? shapeIndex : Math.floor(wave);
-
-        this.shapeRenderer.draw(p, pos, currentShapeIndex, tileW, tileH, iX, iY);
+        this.shapeRenderer.draw(p, pos, shapeIndex ?? 0, tileW, tileH, iX, iY);
 
         if (debug) {
+          console.log('gaaasdas');
           this.shapeRenderer.drawDebugGrid(p, pos, tileW, tileH, iX, iY);
         }
 

@@ -55,14 +55,7 @@ export class Grid {
     });
   }
 
-  draw(
-    p: p5,
-    primaryColor: string,
-    secondaryColor: string,
-    selectedShape: number,
-    speed: number,
-    debug: boolean
-  ): void {
+  draw(p: p5, primaryColor: string, secondaryColor: string, speed: number, debug: boolean): void {
     this.renderer.draw(
       p,
       this.modules,
@@ -72,7 +65,6 @@ export class Grid {
       this.tilesY,
       primaryColor,
       secondaryColor,
-      selectedShape,
       speed,
       debug
     );
