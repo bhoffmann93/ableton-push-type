@@ -47,7 +47,6 @@ export class GridRenderer {
         this.shapeRenderer.draw(p, pos, shapeIndex ?? 0, tileW, tileH, iX, iY);
 
         if (debug) {
-          console.log('gaaasdas');
           this.shapeRenderer.drawDebugGrid(p, pos, tileW, tileH, iX, iY);
         }
 
