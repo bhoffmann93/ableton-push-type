@@ -7,27 +7,29 @@
     <title>Grid</title>
   </head>
   <body>
-    <div id="app"></div>
-
-    <!-- Push Controller UI -->
-    <div id="push-ui">
-      <div class="knobs-row">
-        <div class="knob-container">
-          <div class="knob" id="knob1" style="--rotation: 0deg">
-            <div class="knob-indicator"></div>
+    <div id="push-container">
+      <!-- Push Controller UI -->
+      <div id="push-ui">
+        <div class="knobs-row">
+          <div class="knob-container">
+            <div class="knob" id="knob1" style="--rotation: 0deg">
+              <div class="knob-indicator"></div>
+            </div>
+            <span class="knob-label">Alley X</span>
+            <span class="knob-value" id="knob1-value">0.00</span>
           </div>
-          <span class="knob-label">Alley X</span>
-          <span class="knob-value" id="knob1-value">0.00</span>
-        </div>
 
-        <div class="knob-container">
-          <div class="knob" id="knob2" style="--rotation: 0deg">
-            <div class="knob-indicator"></div>
+          <div class="knob-container">
+            <div class="knob" id="knob2" style="--rotation: 0deg">
+              <div class="knob-indicator"></div>
+            </div>
+            <span class="knob-label">Alley Y</span>
+            <span class="knob-value" id="knob2-value">0.00</span>
           </div>
-          <span class="knob-label">Alley Y</span>
-          <span class="knob-value" id="knob2-value">0.00</span>
         </div>
       </div>
+
+      <div id="app"></div>
     </div>
 
     <script type="module" src="/src/main.ts"></script>

@@ -5,22 +5,24 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
+#push-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+  gap: 20px;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  position: absolute;
-  top: 10%;
-  left: 250px; /* Position canvas to the right of the knobs */
 }
 
 /* Push UI */
 #push-ui {
-  position: absolute;
-  top: 10%;
-  left: 20px;
   background: #1a1a1a;
   padding: 20px;
   /* border-radius: 8px; */
@@ -71,7 +73,7 @@ body {
   left: 28px;
   transform-origin: center 22px;
   transform: rotate(var(--rotation));
-  transition: transform 0.1s ease-out;
+  /* transition: transform 0.1s ease-out; */
   z-index: 1;
   box-shadow: 0 0 8px rgba(74, 158, 255, 0.6);
 }
