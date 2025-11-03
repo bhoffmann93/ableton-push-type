@@ -7,6 +7,7 @@ import CubicBezier from '@thednp/bezier-easing';
 import { PushController } from './midi';
 import { GRID_CONFIG } from './config/grid.config';
 import { Grid } from './grid';
+import { EASE_TYPE } from './types/types';
 
 // Constants
 const waveSpeed = 0.025;
@@ -32,17 +33,15 @@ pushController.initialize().catch((err) => console.error('MIDI initialization fa
 function updateKnobUI() {
   const midiData = pushController.getMidiData();
 
-  // Update knob 1
-  const knob1Angle = midiData.knob1 * 270 - 135; // Map 0-1 to -135° to 135°
-  document.getElementById('knob1')?.style.setProperty('--rotation', `${knob1Angle}deg`);
-  const knob1Value = document.getElementById('knob1-value');
-  if (knob1Value) knob1Value.textContent = midiData.knob1.toFixed(2);
-
-  // Update knob 2
-  const knob2Angle = midiData.knob2 * 270 - 135;
-  document.getElementById('knob2')?.style.setProperty('--rotation', `${knob2Angle}deg`);
-  const knob2Value = document.getElementById('knob2-value');
-  if (knob2Value) knob2Value.textContent = midiData.knob2.toFixed(2);
+  //TOP KNOBS
+  // Update all 8 knobs
+  for (let i = 1; i <= 8; i++) {
+    const knobKey = `knob${i}` as keyof typeof midiData;
+    const knobAngle = midiData[knobKey] * 270 - 135; // Map 0-1 to -135° to 135°
+    document.getElementById(`knob${i}`)?.style.setProperty('--rotation', `${knobAngle}deg`);
+    const knobValue = document.getElementById(`knob${i}-value`);
+    if (knobValue) knobValue.textContent = midiData[knobKey].toFixed(2);
+  }
 
   // Update Grid Method display
   const gridMethodValue = document.getElementById('grid-method-value');
@@ -51,30 +50,9 @@ function updateKnobUI() {
     gridMethodValue.textContent = methodNames[GRID_CONFIG.gridMethod] || 'EQUAL';
   }
 
-  // Update Ease Type display
-  const easeTypeValue = document.getElementById('ease-type-value');
-  if (easeTypeValue) {
-    const easeNames = [
-      'none',
-      'linear',
-      'linearPeak',
-      'step',
-      'parabola',
-      'sinc',
-      'parabola2',
-      'parabolaInv',
-      'quadratic',
-      'inQuart',
-      'inQuartInv',
-      'inQuartAnim',
-      'peak',
-      'peakInv',
-      'peakQuart',
-      'peakEdge',
-      'sin',
-    ];
-    easeTypeValue.textContent = easeNames[GRID_CONFIG.easeType] || 'parabola';
-  }
+  const easeTypes = Object.values(EASE_TYPE).filter((ease) => typeof ease === 'string');
+  const easeTypeElement = document.getElementById('ease-type-value');
+  if (easeTypeElement) easeTypeElement.textContent = easeTypes[GRID_CONFIG.easeType] || 'parabola';
 }
 
 const sketch = new p5((p5Instance) => {
