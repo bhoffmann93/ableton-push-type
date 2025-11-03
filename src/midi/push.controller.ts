@@ -31,7 +31,12 @@ export class PushController {
       await WebMidi.enable();
       this.setupDevices();
       this.setupListeners();
-      console.log('MIDI initialized successfully');
+
+      if (this.midiInput && this.midiOutput) {
+        console.log('✅ Ableton Push connected successfully');
+      } else {
+        console.warn('⚠️ MIDI system ready, but Ableton Push not found');
+      }
     } catch (err) {
       console.error('Failed to initialize MIDI:', err);
       throw err;
