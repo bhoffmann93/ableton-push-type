@@ -7,7 +7,7 @@ import CubicBezier from '@thednp/bezier-easing';
 import { PushController } from './midi';
 import { GRID_CONFIG } from './config/grid.config';
 import { Grid } from './grid';
-import { EASE_TYPE } from './types/types';
+import UserInterface from './ui/ui';
 
 // Constants
 const waveSpeed = 0.025;
@@ -29,31 +29,7 @@ const pushController = new PushController(grid, {
 
 pushController.initialize().catch((err) => console.error('MIDI initialization failed:', err));
 
-// Update UI knobs
-function updateKnobUI() {
-  const midiData = pushController.getMidiData();
-
-  //TOP KNOBS
-  // Update all 8 knobs
-  for (let i = 1; i <= 8; i++) {
-    const knobKey = `knob${i}` as keyof typeof midiData;
-    const knobAngle = midiData[knobKey] * 270 - 135; // Map 0-1 to -135° to 135°
-    document.getElementById(`knob${i}`)?.style.setProperty('--rotation', `${knobAngle}deg`);
-    const knobValue = document.getElementById(`knob${i}-value`);
-    if (knobValue) knobValue.textContent = midiData[knobKey].toFixed(2);
-  }
-
-  // Update Grid Method display
-  const gridMethodValue = document.getElementById('grid-method-value');
-  if (gridMethodValue) {
-    const methodNames = ['SHAPING', 'BEZIER', 'WAVE', 'EQUAL', 'STATIC', 'RANDOM'];
-    gridMethodValue.textContent = methodNames[GRID_CONFIG.gridMethod] || 'EQUAL';
-  }
-
-  const easeTypes = Object.values(EASE_TYPE).filter((ease) => typeof ease === 'string');
-  const easeTypeElement = document.getElementById('ease-type-value');
-  if (easeTypeElement) easeTypeElement.textContent = easeTypes[GRID_CONFIG.easeType] || 'parabola';
-}
+const ui = new UserInterface(pushController);
 
 const sketch = new p5((p5Instance) => {
   const p = p5Instance as unknown as p5;
@@ -91,8 +67,7 @@ const sketch = new p5((p5Instance) => {
 
     grid.draw(p, primaryColor, secondaryColor, speed, GRID_CONFIG.debug);
 
-    // Update knob UI every frame
-    updateKnobUI();
+    ui.updateKnobs();
   };
 }, document.getElementById('app') as HTMLElement);
 
