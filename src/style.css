@@ -4,6 +4,14 @@ body {
   background: #1a1a1a;
   font-family: 'Futura', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --label-font-size: 13px;
+  --knob-gradient: radial-gradient(circle at 30% 30%, #2a2a2a, #1a1a1a);
+  --knob-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5), inset -1px -1px 3px rgba(255, 255, 255, 0.05);
+  --button-gradient: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+  --button-gradient-hover: linear-gradient(145deg, #3a3a3a, #2a2a2a);
+  --button-gradient-active: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+  --button-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5), inset -1px -1px 3px rgba(255, 255, 255, 0.05);
+  --button-shadow-hover: inset 1px 1px 3px rgba(0, 0, 0, 0.7), inset -1px -1px 3px rgba(255, 255, 255, 0.1);
+  --button-shadow-active: inset 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 #push-container {
@@ -35,7 +43,6 @@ body {
   padding-bottom: 30px;
   /* margin-left: calc(210px); */
   /* border-radius: 8px; */
-  /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); */
 }
 
 /* Button Knobs (Left Side) */
@@ -76,7 +83,8 @@ body {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: #0f0f0f;
+  background: var(--knob-gradient);
+  box-shadow: var(--knob-shadow);
 }
 
 .button-knob:hover {
@@ -129,7 +137,8 @@ body {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: #0f0f0f;
+  background: var(--knob-gradient);
+  box-shadow: var(--knob-shadow);
 }
 
 .knob-label {
@@ -177,8 +186,8 @@ body {
   width: 70px;
   height: 70px;
   border-radius: 4px;
-  background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5), inset -1px -1px 3px rgba(255, 255, 255, 0.05);
+  background: var(--button-gradient);
+  box-shadow: var(--button-shadow);
   border: none;
   cursor: pointer;
   display: flex;
@@ -188,13 +197,13 @@ body {
 }
 
 .transport-button:hover {
-  background: linear-gradient(145deg, #3a3a3a, #2a2a2a);
-  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.7), inset -1px -1px 3px rgba(255, 255, 255, 0.1);
+  background: var(--button-gradient-hover);
+  box-shadow: var(--button-shadow-hover);
 }
 
 .transport-button.active {
-  background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
-  box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.8);
+  background: var(--button-gradient-active);
+  box-shadow: var(--button-shadow-active);
 }
 
 .transport-icon {
@@ -211,6 +220,6 @@ body {
   font-weight: 500;
 }
 
-.transport-button:hover + .transport-label {
+/* .transport-button:hover + .transport-label {
   color: #aaa;
-}
+} */
