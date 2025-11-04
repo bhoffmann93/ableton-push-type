@@ -7,7 +7,7 @@ body {
   --label-color: #ababab;
   --knob-letter-spacing: 0.5px;
   /* --blue-color: #4a9eff; */
-  --highlight-color: hsl(9, 0%, 80%);
+  --highlight-color: rgb(204, 204, 204);
   --knob-gradient: radial-gradient(circle at 30% 30%, #3a3a3a, #252525);
   --knob-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5), inset -1px -1px 3px rgba(255, 255, 255, 0.05);
   --button-gradient: linear-gradient(145deg, #3a3a3a, #252525);

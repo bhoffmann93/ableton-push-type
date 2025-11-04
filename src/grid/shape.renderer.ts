@@ -89,11 +89,11 @@ export class ShapeRenderer {
     p.pop();
   }
 
-  drawDebugGrid(p: p5, pos: { x: number; y: number }, tileW: number, tileH: number, iX: number, iY: number): void {
+  drawTileOutline(p: p5, pos: { x: number; y: number }, tileW: number, tileH: number, iX: number, iY: number): void {
     p.push();
     p.noFill();
-    p.stroke(255);
-    p.strokeWeight(1);
+    p.stroke(250);
+    p.strokeWeight(1.0);
     p.translate(pos.x, pos.y);
     p.rect(0, 0, tileW, tileH);
     p.textStyle(p.NORMAL);

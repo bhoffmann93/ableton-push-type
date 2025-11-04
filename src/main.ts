@@ -17,8 +17,8 @@ const bezierValues = [0.5, 0, 0.5, 1];
 const easeCubicBezierX = new CubicBezier(...bezierValues);
 const easeCubicBezierY = new CubicBezier(...bezierValues);
 
-const primaryColor = GRID_CONFIG.swapColors ? GRID_CONFIG.colorPair[0] : GRID_CONFIG.colorPair[1];
-const secondaryColor = GRID_CONFIG.swapColors ? GRID_CONFIG.colorPair[1] : GRID_CONFIG.colorPair[0];
+const primaryColor = GRID_CONFIG.swapColors ? GRID_CONFIG.colorPair[1] : GRID_CONFIG.colorPair[0];
+const secondaryColor = GRID_CONFIG.swapColors ? GRID_CONFIG.colorPair[0] : GRID_CONFIG.colorPair[1];
 
 // Initialize grid and MIDI controller
 const grid = new Grid(GRID_CONFIG.tilesX, GRID_CONFIG.tilesY);
