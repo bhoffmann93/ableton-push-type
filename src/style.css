@@ -192,7 +192,7 @@ body {
   box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.7), inset -1px -1px 3px rgba(255, 255, 255, 0.1);
 }
 
-.transport-button:active {
+.transport-button.active {
   background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
   box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.8);
 }

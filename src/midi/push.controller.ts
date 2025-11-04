@@ -95,16 +95,19 @@ export class PushController {
         break;
       case PushButtonMidiCC.NEW:
         GRID_CONFIG.shouldSetButtonsToInitialShapeindex = !GRID_CONFIG.shouldSetButtonsToInitialShapeindex;
+        this.flashButton('new-btn');
         break;
       case PushButtonMidiCC.RECORD:
         if (e.rawValue === 127) {
           GRID_CONFIG.debug = !GRID_CONFIG.debug;
+          this.flashButton('record-btn');
         }
         break;
       case PushButtonMidiCC.PLAY:
         if (e.rawValue === 127) {
           this.grid.resetAllShapes();
           this.setAllButtonsOff();
+          this.flashButton('play-btn');
         }
         break;
     }
@@ -199,6 +202,16 @@ export class PushController {
     for (let i = PUSH_BUTTON_RANGE.min; i <= PUSH_BUTTON_RANGE.max; i++) {
       this.midiOutput.sendNoteOff(i, { channels: 1 });
     }
+  }
+
+  private flashButton(buttonId: string): void {
+    const button = document.getElementById(buttonId);
+    if (!button) return;
+
+    button.classList.add('active');
+    setTimeout(() => {
+      button.classList.remove('active');
+    }, 150);
   }
 
   getMidiData(): MidiData {
