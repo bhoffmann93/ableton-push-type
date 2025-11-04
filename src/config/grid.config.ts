@@ -1,5 +1,5 @@
 import { COLOR_PAIRS } from '../constants/color.constants';
-import { METHOD, EASE_TYPE, EASE_MIRROR_TYPE } from '../types/types';
+import { GRID_METHOD, EASE_TYPE, EASE_MIRROR_TYPE } from '../types/types';
 
 //!Contains State should be changed in the future
 export const GRID_CONFIG = {
@@ -11,7 +11,7 @@ export const GRID_CONFIG = {
   colorPair: COLOR_PAIRS.DARK_GREY_LIGHT_GREY,
   swapColors: true,
   debug: true,
-  gridMethod: METHOD.Uniform as METHOD,
+  gridMethod: GRID_METHOD.Uniform as GRID_METHOD,
   easeType: EASE_TYPE.parabola as EASE_TYPE,
   shouldSetButtonsToInitialShapeindex: false,
   mirrorInput: EASE_MIRROR_TYPE.none as EASE_MIRROR_TYPE,

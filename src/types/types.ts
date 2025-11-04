@@ -1,4 +1,4 @@
-export enum METHOD {
+export enum GRID_METHOD {
   Shaping,
   Wave,
   Uniform,

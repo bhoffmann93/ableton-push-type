@@ -1,6 +1,6 @@
 import { PushController } from '../midi';
 import { GRID_CONFIG } from '../config/grid.config';
-import { EASE_TYPE, METHOD } from '../types/types';
+import { EASE_TYPE, GRID_METHOD } from '../types/types';
 
 export default class UserInterface {
   private pushController: PushController;
@@ -25,9 +25,9 @@ export default class UserInterface {
 
     // Update Grid Method display
     const gridMethodValue = document.getElementById('grid-method-value');
-    const methodNames = Object.values(METHOD).filter((ease) => typeof ease === 'string');
+    const methodNames = Object.values(GRID_METHOD).filter((ease) => typeof ease === 'string');
     if (gridMethodValue)
-      gridMethodValue.textContent = methodNames[GRID_CONFIG.gridMethod] || methodNames[METHOD.Uniform];
+      gridMethodValue.textContent = methodNames[GRID_CONFIG.gridMethod] || methodNames[GRID_METHOD.Uniform];
 
     const easeTypes = Object.values(EASE_TYPE).filter((ease) => typeof ease === 'string');
     const easeTypeElement = document.getElementById('ease-type-value');
