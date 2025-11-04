@@ -25,7 +25,8 @@ export default class UserInterface {
     // Update Grid Method display
     const gridMethodValue = document.getElementById('grid-method-value');
     const methodNames = Object.values(METHOD).filter((ease) => typeof ease === 'string');
-    if (gridMethodValue) gridMethodValue.textContent = methodNames[GRID_CONFIG.gridMethod] || methodNames[METHOD.EQUAL];
+    if (gridMethodValue)
+      gridMethodValue.textContent = methodNames[GRID_CONFIG.gridMethod] || methodNames[METHOD.Uniform];
 
     const easeTypes = Object.values(EASE_TYPE).filter((ease) => typeof ease === 'string');
     const easeTypeElement = document.getElementById('ease-type-value');
