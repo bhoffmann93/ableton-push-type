@@ -28,7 +28,7 @@ export interface MidiCallbacks {
   onButtonPress?: (row: number, col: number) => void;
 }
 
-export enum PushButton {
+export enum PushButtonMidiCC {
   KNOB_LEFT_1 = 14,
   KNOB_LEFT_2 = 15,
   NEW = 87,
@@ -36,7 +36,7 @@ export enum PushButton {
   PLAY = 85,
 }
 
-export enum PushKnob {
+export enum PushKnobCCMapping {
   KNOB_1 = 71,
   KNOB_2 = 72,
   KNOB_3 = 73,
