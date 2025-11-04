@@ -30,9 +30,10 @@ body {
 /* Push UI */
 #push-ui {
   background: #1a1a1a;
-  padding: 20px;
-  padding-left: 0;
-  margin-left: calc(270px); /* 290px total */
+  padding: 35px;
+  padding-left: 240px;
+  padding-bottom: 30px;
+  /* margin-left: calc(210px); */
   /* border-radius: 8px; */
   /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); */
 }
@@ -43,14 +44,14 @@ body {
   flex-direction: row;
   gap: 0px;
   padding: 20px;
-  padding-top: 40px;
+  padding-top: 10px;
 }
 
 .button-knob-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 15px;
   min-width: 100px;
 }
 
@@ -157,7 +158,7 @@ body {
 .knob-value {
   color: #4a9eff;
   font-size: var(--label-font-size);
-  font-weight: 600;
+  /* font-weight: 600; */
   /* font-family: 'Courier New', monospace; */
   min-width: 100px;
   text-align: center;
