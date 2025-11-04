@@ -1,5 +1,6 @@
 import p5 from 'p5';
 import { isXorYAlley } from './grid.utils';
+//Handles individual Shape Drawings
 
 export class ShapeRenderer {
   draw(

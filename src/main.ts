@@ -1,11 +1,13 @@
 // @ts-nocheck
 import p5 from 'p5';
 import './style.css';
+import { getDateAndTimeString } from './utils/utils';
 import { easing } from 'ts-easing';
 import CubicBezier from '@thednp/bezier-easing';
 import { PushController } from './midi';
 import { GRID_CONFIG } from './config/grid.config';
 import { Grid } from './grid';
+import UserInterface from './ui/ui';
 
 // Constants
 const waveSpeed = 0.025;
@@ -26,6 +28,8 @@ const pushController = new PushController(grid, {
 });
 
 pushController.initialize().catch((err) => console.error('MIDI initialization failed:', err));
+
+const ui = new UserInterface(pushController);
 
 const sketch = new p5((p5Instance) => {
   const p = p5Instance as unknown as p5;
@@ -62,6 +66,7 @@ const sketch = new p5((p5Instance) => {
     });
 
     grid.draw(p, primaryColor, secondaryColor, speed, GRID_CONFIG.debug);
+    ui.updateKnobs();
   };
 }, document.getElementById('app') as HTMLElement);
 

@@ -1,18 +1,3 @@
-export enum METHOD {
-  SHAPING_FUNCTION,
-  BEZIER,
-  WAVE,
-  EQUAL,
-  STATIC_ALLEY,
-  RANDOM,
-}
-
-export interface GridModule {
-  w: number;
-  h: number;
-  shapeIndex: number;
-}
-
 export enum EASE_TYPE {
   none,
   linear,
@@ -21,11 +6,11 @@ export enum EASE_TYPE {
   parabola,
   sinc,
   parabola2,
-  parabolaInvertY,
+  // parabolaInvertY,
   quadratic,
   inQuart,
-  inQuartInvert,
-  inQuartAnimated,
+  // inQuartInvert,
+  // inQuartAnimated,
   peak,
   peakInvert,
   peakQuart,

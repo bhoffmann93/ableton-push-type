@@ -1,10 +1,11 @@
 import { WebMidi, Utilities, Input, Output } from 'webmidi';
-import { MidiData, PushKnob, PushButton, PushLEDColor } from '../types/midi.types';
+import { MidiData, PushKnobCCMapping, PushButtonMidiCC, PushLEDColor } from '../types/midi.types';
 import { PUSH_CONFIG, PUSH_BUTTON_RANGE, MIDI_CHANNELS } from '../config/push.config';
 import { clamp } from '../utils/utils';
 import { Grid } from '../grid/grid';
 import { GRID_CONFIG } from '../config/grid.config';
-import { METHOD, EASE_TYPE } from '../types/types';
+import { EASE_TYPE } from '../types/types';
+import { GRID_METHOD } from '../grid';
 
 export class PushController {
   private midiInput: Input | null = null;
@@ -31,7 +32,12 @@ export class PushController {
       await WebMidi.enable();
       this.setupDevices();
       this.setupListeners();
-      console.log('MIDI initialized successfully');
+
+      if (this.midiInput && this.midiOutput) {
+        console.log('✅ Ableton Push connected successfully');
+      } else {
+        console.warn('⚠️ MIDI system ready, but Ableton Push not found');
+      }
     } catch (err) {
       console.error('Failed to initialize MIDI:', err);
       throw err;
@@ -75,38 +81,41 @@ export class PushController {
     const controllerNumber = e.controller.number;
 
     // Handle knobs
-    if (controllerNumber >= PushKnob.KNOB_1 && controllerNumber <= PushKnob.KNOB_8) {
+    if (controllerNumber >= PushKnobCCMapping.KNOB_1 && controllerNumber <= PushKnobCCMapping.KNOB_8) {
       this.handleKnobChange(controllerNumber, e.rawValue);
       return;
     }
 
     // Handle buttons
     switch (controllerNumber) {
-      case PushButton.KNOB_LEFT_1:
+      case PushButtonMidiCC.KNOB_LEFT_1:
         this.cycleGridMethod();
         break;
-      case PushButton.KNOB_LEFT_2:
+      case PushButtonMidiCC.KNOB_LEFT_2:
         this.cycleShapingFunction();
         break;
-      case PushButton.NEW:
+      case PushButtonMidiCC.NEW:
         GRID_CONFIG.shouldSetButtonsToInitialShapeindex = !GRID_CONFIG.shouldSetButtonsToInitialShapeindex;
+        this.flashButton('new-btn');
         break;
-      case PushButton.RECORD:
+      case PushButtonMidiCC.RECORD:
         if (e.rawValue === 127) {
           GRID_CONFIG.debug = !GRID_CONFIG.debug;
+          this.flashButton('record-btn');
         }
         break;
-      case PushButton.PLAY:
+      case PushButtonMidiCC.PLAY:
         if (e.rawValue === 127) {
           this.grid.resetAllShapes();
           this.setAllButtonsOff();
+          this.flashButton('play-btn');
         }
         break;
     }
   }
 
   private handleKnobChange(controllerNumber: number, rawValue: number): void {
-    const knobIndex = controllerNumber - PushKnob.KNOB_1;
+    const knobIndex = controllerNumber - PushKnobCCMapping.KNOB_1;
     const knobKey = `knob${knobIndex + 1}` as keyof MidiData;
 
     let normalizedValue = Utilities.from7bitToFloat(rawValue);
@@ -163,11 +172,12 @@ export class PushController {
   }
 
   private cycleGridMethod(): void {
-    const methods = Object.values(METHOD).filter((method) => typeof method === 'number');
+    const methods = Object.values(GRID_METHOD).filter((method) => typeof method === 'number');
+    console.log('methods: ', methods);
     const currentIndex = methods.indexOf(GRID_CONFIG.gridMethod);
     const nextIndex = (currentIndex + 1) % methods.length;
     GRID_CONFIG.gridMethod = methods[nextIndex];
-    console.log('Grid Method:', METHOD[methods[nextIndex]]);
+    console.log('Grid Method:', GRID_METHOD[methods[nextIndex]]);
   }
 
   private cycleShapingFunction(): void {
@@ -194,6 +204,16 @@ export class PushController {
     for (let i = PUSH_BUTTON_RANGE.min; i <= PUSH_BUTTON_RANGE.max; i++) {
       this.midiOutput.sendNoteOff(i, { channels: 1 });
     }
+  }
+
+  private flashButton(buttonId: string): void {
+    const button = document.getElementById(buttonId);
+    if (!button) return;
+
+    button.classList.add('active');
+    setTimeout(() => {
+      button.classList.remove('active');
+    }, 150);
   }
 
   getMidiData(): MidiData {

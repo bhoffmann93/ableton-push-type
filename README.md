@@ -21,3 +21,11 @@ After starting a project...
 2. Open `http://localhost:3000` in a browser
 3. Make edits to `src/main.ts`
    ˘
+
+# Ableton Push
+
+See https://github.com/Ableton/push-interface/blob/main/doc/AbletonPush2MIDIDisplayInterface.asc#MIDI%20Mapping for Midi Mapping
+
+1. Connect Push
+2. Push Ableton Push in User Mode
+3. Start the App
