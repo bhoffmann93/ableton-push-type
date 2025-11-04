@@ -11,6 +11,7 @@ export default class UserInterface {
     console.log('this.midiData: ', this.midiData);
   }
 
+  //!should be event based or update only on change
   public updateKnobs() {
     //TOP ROW KNOBS
     for (let i = 1; i <= Object.keys(this.midiData).length; i++) {

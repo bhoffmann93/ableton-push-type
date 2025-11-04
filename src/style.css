@@ -8,14 +8,14 @@ body {
 #push-container {
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  gap: 20px;
+  padding: 0px;
+  gap: 0px;
 }
 
 #bottom-row {
   display: flex;
   flex-direction: row;
-  gap: 20px;
+  gap: 0px;
   align-items: flex-start;
 }
 
@@ -32,8 +32,7 @@ body {
   background: #1a1a1a;
   padding: 20px;
   padding-left: 0;
-  /* Button knobs width calculation: 2 containers (100px each) + gap (30px) + padding (40px) = 270px + bottom-row gap (20px) = 290px */
-  margin-left: calc(100px + 30px + 100px + 40px + 20px); /* 290px total */
+  margin-left: calc(270px); /* 290px total */
   /* border-radius: 8px; */
   /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); */
 }
@@ -86,7 +85,7 @@ body {
 
 .knobs-row {
   display: flex;
-  gap: 30px;
+  gap: 0px;
 }
 
 .knob-container {
@@ -98,7 +97,7 @@ body {
 }
 
 .knob {
-  width: 60px;
+  width: 50px;
   height: 60px;
   border-radius: 50%;
   background: linear-gradient(145deg, #2a2a2a, #1a1a1a);

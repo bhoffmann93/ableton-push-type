@@ -66,7 +66,6 @@ const sketch = new p5((p5Instance) => {
     });
 
     grid.draw(p, primaryColor, secondaryColor, speed, GRID_CONFIG.debug);
-
     ui.updateKnobs();
   };
 }, document.getElementById('app') as HTMLElement);
