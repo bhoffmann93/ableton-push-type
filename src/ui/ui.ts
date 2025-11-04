@@ -1,6 +1,7 @@
 import { PushController } from '../midi';
 import { GRID_CONFIG } from '../config/grid.config';
-import { EASE_TYPE, GRID_METHOD } from '../types/types';
+import { EASE_TYPE } from '../types/types';
+import { GRID_METHOD } from '../grid';
 
 export default class UserInterface {
   private pushController: PushController;

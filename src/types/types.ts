@@ -1,18 +1,3 @@
-export enum GRID_METHOD {
-  Shaping,
-  Wave,
-  Uniform,
-  Alley,
-  // Bezier,
-  // Random,
-}
-
-export interface GridModule {
-  w: number;
-  h: number;
-  shapeIndex: number;
-}
-
 export enum EASE_TYPE {
   none,
   linear,

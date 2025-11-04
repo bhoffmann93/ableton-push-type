@@ -1,10 +1,10 @@
-export enum METHOD {
-  SHAPING_FUNCTION,
-  BEZIER,
-  WAVE,
-  EQUAL,
-  STATIC_ALLEY,
-  RANDOM,
+export enum GRID_METHOD {
+  Shaping,
+  Bezier,
+  Wave,
+  Uniform,
+  StaticAlley,
+  Random,
 }
 
 export interface GridModule {

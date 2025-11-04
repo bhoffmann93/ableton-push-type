@@ -4,7 +4,8 @@ import { PUSH_CONFIG, PUSH_BUTTON_RANGE, MIDI_CHANNELS } from '../config/push.co
 import { clamp } from '../utils/utils';
 import { Grid } from '../grid/grid';
 import { GRID_CONFIG } from '../config/grid.config';
-import { GRID_METHOD, EASE_TYPE } from '../types/types';
+import { EASE_TYPE } from '../types/types';
+import { GRID_METHOD } from '../grid';
 
 export class PushController {
   private midiInput: Input | null = null;
@@ -172,6 +173,7 @@ export class PushController {
 
   private cycleGridMethod(): void {
     const methods = Object.values(GRID_METHOD).filter((method) => typeof method === 'number');
+    console.log('methods: ', methods);
     const currentIndex = methods.indexOf(GRID_CONFIG.gridMethod);
     const nextIndex = (currentIndex + 1) % methods.length;
     GRID_CONFIG.gridMethod = methods[nextIndex];

@@ -1,5 +1,5 @@
 import p5 from 'p5';
-import { GridModule, METHOD } from './grid.types';
+import { GridModule, GRID_METHOD } from './grid.types';
 import { factory } from '../factory';
 import { EASE_TYPE, EASE_MIRROR_TYPE } from '../types/types';
 import { peakify, clamp } from '../utils/utils';
@@ -11,7 +11,7 @@ export interface GridCalculationParams {
   tilesY: number;
   alleyX: number;
   alleyY: number;
-  method: METHOD;
+  method: GRID_METHOD;
   easeType: EASE_TYPE;
   mirrorInput: EASE_MIRROR_TYPE;
   easeCubicBezierX: CubicBezier;
@@ -35,7 +35,7 @@ export class GridCalculator {
 
       const freqY = 0.3;
       const ampWaveY = 0.7;
-      const waveY = ampWaveY * Math.sin(iY * freqY + p.frameCount * 0.01) * 0.5 + 0.5;
+      const waveY = ampWaveY * Math.sin(iY * freqY - p.millis() / 1000.0) * 0.5 + 0.5;
 
       for (let iX = 1; iX < params.tilesX; iX++) {
         const w = iX / params.tilesX;
@@ -44,36 +44,36 @@ export class GridCalculator {
         const aspect = tileWo / tileHo;
 
         switch (params.method) {
-          case METHOD.RANDOM:
+          case GRID_METHOD.Random:
             eased.w = isAlley(iX) ? params.alleyX : params.randomColumnWidths[iX];
             eased.h = isAlley(iY) ? params.alleyX * aspect : params.randomRowHeights[iY];
             break;
-          case METHOD.STATIC_ALLEY:
+          case GRID_METHOD.StaticAlley:
             eased.w = isAlley(iX) ? params.alleyX : 1;
             eased.h = isAlley(iY) ? params.alleyX * aspect : 1;
             break;
-          case METHOD.EQUAL:
+          case GRID_METHOD.Uniform:
             eased.w = 1;
             eased.h = 1;
             break;
-          case METHOD.SHAPING_FUNCTION:
+          case GRID_METHOD.Shaping:
             const easedOut = factory(w, h, time, params.easeType, params.mirrorInput);
             eased.w = isAlley(iX) ? params.alleyX : easedOut.w;
             eased.h = isAlley(iY) ? params.alleyY : easedOut.h;
             break;
-          case METHOD.BEZIER:
+          case GRID_METHOD.Bezier:
             //@ts-ignore
             eased.w = clamp(peakify(w, params.easeCubicBezierX), 0, 1);
             //@ts-ignore
             eased.h = clamp(peakify(h, params.easeCubicBezierY), 0, 1);
             break;
-          case METHOD.WAVE:
+          case GRID_METHOD.Wave:
             const freqX = 5;
             const ampWaveX = 0.5;
             const offWaveX = 1 + time * 0.5;
             const waveX = 1;
 
-            const wave0 = Math.sin(p.frameCount * 0.01) * 0.5 + 0.5;
+            const wave0 = Math.sin(time - iY * Math.PI) * 0.5 + 0.5;
 
             if (iX % 3 === 0) {
               // Optional wave variations
@@ -91,15 +91,15 @@ export class GridCalculator {
         }
 
         const tileWeased = tileWo * eased.w;
-        const tileHeeased = tileHo * eased.h;
+        const tileHeased = tileHo * eased.h;
 
         rowModules.push({
           w: tileWeased,
-          h: tileHeeased,
+          h: tileHeased,
         });
 
         sumWidth += tileWeased;
-        if (iX === 1) sumHeight += tileHeeased;
+        if (iX === 1) sumHeight += tileHeased;
       }
 
       if (iY === 1) this.scaleFactor.x = p.width / sumWidth;
