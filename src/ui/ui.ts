@@ -13,7 +13,7 @@ export default class UserInterface {
   //!should be event based or update only on change
   public updateKnobs() {
     const midiData = this.pushController.getMidiData();
-    
+
     //TOP ROW KNOBS
     for (let i = 1; i <= Object.keys(midiData).length; i++) {
       const knobKey = `knob${i}` as keyof typeof midiData;
