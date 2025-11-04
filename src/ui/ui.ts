@@ -1,25 +1,26 @@
 import { PushController } from '../midi';
 import { GRID_CONFIG } from '../config/grid.config';
-import { MidiData } from '../midi';
 import { EASE_TYPE, METHOD } from '../types/types';
 
 export default class UserInterface {
-  private midiData: MidiData;
+  private pushController: PushController;
 
   constructor(pushController: PushController) {
-    this.midiData = pushController.getMidiData();
-    console.log('this.midiData: ', this.midiData);
+    this.pushController = pushController;
+    console.log('Initial midiData: ', pushController.getMidiData());
   }
 
   //!should be event based or update only on change
   public updateKnobs() {
+    const midiData = this.pushController.getMidiData();
+    
     //TOP ROW KNOBS
-    for (let i = 1; i <= Object.keys(this.midiData).length; i++) {
-      const knobKey = `knob${i}` as keyof typeof this.midiData;
-      const knobAngle = this.midiData[knobKey] * 270 - 135; // Map 0-1 to -135° to 135°
+    for (let i = 1; i <= Object.keys(midiData).length; i++) {
+      const knobKey = `knob${i}` as keyof typeof midiData;
+      const knobAngle = midiData[knobKey] * 270 - 135; // Map 0-1 to -135° to 135°
       document.getElementById(`knob${i}`)?.style.setProperty('--rotation', `${knobAngle}deg`);
       const knobValue = document.getElementById(`knob${i}-value`);
-      if (knobValue) knobValue.textContent = this.midiData[knobKey].toFixed(2);
+      if (knobValue) knobValue.textContent = midiData[knobKey].toFixed(2);
     }
 
     // Update Grid Method display

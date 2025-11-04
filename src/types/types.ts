@@ -1,10 +1,10 @@
 export enum METHOD {
   Shaping,
   // Bezier,
-  Wave,
+  // Wave,
   Uniform,
   Alley,
-  Random,
+  // Random,
 }
 
 export interface GridModule {
