@@ -1,9 +1,9 @@
 export enum METHOD {
   Shaping,
-  // Bezier,
-  // Wave,
+  Wave,
   Uniform,
   Alley,
+  // Bezier,
   // Random,
 }
 

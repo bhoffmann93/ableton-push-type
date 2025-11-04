@@ -57,10 +57,10 @@ body {
 
 .button-knob {
   width: 50px;
-  height: 60px;
+  height: 50px;
   border-radius: 50%;
-  background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5), inset -2px -2px 5px rgba(255, 255, 255, 0.05);
+  background: transparent;
+  box-shadow: none;
   border: none;
   cursor: pointer;
   position: relative;
@@ -112,10 +112,10 @@ body {
 
 .knob {
   width: 50px;
-  height: 60px;
+  height: 50px;
   border-radius: 50%;
-  background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5), inset -2px -2px 5px rgba(255, 255, 255, 0.05);
+  background: transparent;
+  box-shadow: none;
   position: relative;
   display: flex;
   align-items: center;
@@ -130,22 +130,6 @@ body {
   height: 50px;
   border-radius: 50%;
   background: #0f0f0f;
-}
-
-.knob-indicator {
-  display: none;
-  position: absolute;
-  width: 4px;
-  height: 24px;
-  background: linear-gradient(to bottom, #4a9eff, #2d7bd4);
-  border-radius: 2px;
-  top: 8px;
-  left: 28px;
-  transform-origin: center 22px;
-  transform: rotate(var(--rotation));
-  /* transition: transform 0.1s ease-out; */
-  z-index: 1;
-  box-shadow: 0 0 8px rgba(74, 158, 255, 0.6);
 }
 
 .knob-label {
