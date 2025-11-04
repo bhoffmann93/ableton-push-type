@@ -11,7 +11,7 @@ export const GRID_CONFIG = {
   colorPair: COLOR_PAIRS.DARK_GREY_LIGHT_GREY,
   swapColors: true,
   debug: true,
-  gridMethod: GRID_METHOD.Wave as GRID_METHOD,
+  gridMethod: GRID_METHOD.Uniform as GRID_METHOD,
   easeType: EASE_TYPE.parabola as EASE_TYPE,
   shouldSetButtonsToInitialShapeindex: false,
   mirrorInput: EASE_MIRROR_TYPE.none as EASE_MIRROR_TYPE,
