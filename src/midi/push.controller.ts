@@ -70,23 +70,23 @@ export class PushController {
   private setupListeners(): void {
     if (!this.midiInput) return;
 
-    this.midiInput.addListener('controlchange', (e) => this.handleControlChange(e), {
+    this.midiInput.addListener('controlchange', (e) => this.handleMidiCC(e), {
       channels: MIDI_CHANNELS,
     });
 
     this.midiInput.addListener('noteon', (e) => this.handleNoteOn(e));
   }
 
-  private handleControlChange(e: any): void {
+  private handleMidiCC(e: any): void {
     const controllerNumber = e.controller.number;
 
-    // Handle knobs
+    // Handle upper knob row
     if (controllerNumber >= PushKnobCCMapping.KNOB_1 && controllerNumber <= PushKnobCCMapping.KNOB_8) {
-      this.handleKnobChange(controllerNumber, e.rawValue);
+      this.handleKnobMididCC(controllerNumber, e.rawValue);
       return;
     }
 
-    // Handle buttons
+    //handle left knobs and buttons
     switch (controllerNumber) {
       case PushButtonMidiCC.KNOB_LEFT_1:
         this.cycleGridMethod();
@@ -114,7 +114,7 @@ export class PushController {
     }
   }
 
-  private handleKnobChange(controllerNumber: number, rawValue: number): void {
+  private handleKnobMididCC(controllerNumber: number, rawValue: number): void {
     const knobIndex = controllerNumber - PushKnobCCMapping.KNOB_1;
     const knobKey = `knob${knobIndex + 1}` as keyof MidiData;
 
