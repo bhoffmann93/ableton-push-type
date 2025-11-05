@@ -79,6 +79,10 @@ body {
   content: '🔊';
 }
 
+.audio-toggle.inactive .audio-icon::before {
+  background: var(--button-gradient-active);
+  content: '🔇';
+}
 .audio-toggle:hover {
   background: var(--button-gradient-hover);
 }

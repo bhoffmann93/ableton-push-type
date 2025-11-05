@@ -13,9 +13,9 @@ export class PushController {
   private midiOutput: webmidi.Output | null = null;
   private midiData: MidiData;
   private grid: Grid;
-  private audioSynth: AudioSynth;
+  private audioSynth: AudioSynth | null;
 
-  constructor(grid: Grid, audioSynth: AudioSynth, initialData?: Partial<MidiData>) {
+  constructor(grid: Grid, audioSynth: AudioSynth | null, initialData?: Partial<MidiData>) {
     this.grid = grid;
     this.audioSynth = audioSynth;
     this.midiData = {
@@ -234,5 +234,9 @@ export class PushController {
     if (this.midiInput) {
       this.midiInput.removeListener();
     }
+  }
+
+  setAudioSynth(audioSynth: AudioSynth) {
+    this.audioSynth = audioSynth;
   }
 }

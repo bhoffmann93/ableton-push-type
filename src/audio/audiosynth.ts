@@ -2,9 +2,12 @@ import * as Tone from 'tone';
 
 export class AudioSynth {
   private synth: Tone.Synth;
+  public isMuted = false;
 
   constructor() {
     this.synth = new Tone.Synth().toDestination();
+    console.log('this.synth: ', this.synth);
+
     console.log('🎼 Tone Audio Synth created ');
   }
 
@@ -24,5 +27,11 @@ export class AudioSynth {
 
   dispose(): void {
     this.synth.dispose();
+  }
+
+  toggleMute() {
+    this.isMuted = !this.isMuted;
+    if (this.isMuted == false) this.synth.volume.value = 1.0; //db
+    else this.synth.volume.value = -32.0;
   }
 }

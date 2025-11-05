@@ -21,34 +21,56 @@ const easeCubicBezierY = new CubicBezier(...bezierValues);
 const primaryColor = GRID_CONFIG.swapColors ? GRID_CONFIG.colorPair[1] : GRID_CONFIG.colorPair[0];
 const secondaryColor = GRID_CONFIG.swapColors ? GRID_CONFIG.colorPair[0] : GRID_CONFIG.colorPair[1];
 
-function waitForClick(buttonId: string): Promise<void> {
-  return new Promise<void>((resolve) => {
-    document.getElementById(buttonId)?.addEventListener(
-      'click',
-      () => {
-        resolve();
-      },
-      { once: true }
-    );
-  });
-}
+// function waitForClick(buttonId: string): Promise<void> {
+//   return new Promise<void>((resolve) => {
+//     document.getElementById(buttonId)?.addEventListener(
+//       'click',
+//       () => {
+//         resolve();
+//       },
+//       { once: true }
+//     );
+//   });
+// }
 
 async function main() {
-  console.log('waiting for user input');
-  await waitForClick('enable-audio-btn');
-  await Tone.start();
-  console.log('🎼 Tone started ');
+  // console.log('waiting for user input');
   document.getElementById('audio-overlay')?.remove();
-
-  const audioSynth = new AudioSynth();
+  // await waitForClick('enable-audio-btn');
+  // await Tone.start();
+  // console.log('🎼 Tone started ');
+  // const audioSynth = new AudioSynth();
 
   const grid = new Grid(GRID_CONFIG.tilesX, GRID_CONFIG.tilesY);
+
+  let audioSynth: AudioSynth | null = null;
   const pushController = new PushController(grid, audioSynth, {
     knob1: GRID_CONFIG.alleyX,
     knob2: GRID_CONFIG.alleyY,
   });
 
   pushController.initialize().catch((err) => console.error('MIDI initialization failed:', err));
+
+  const audioToggleButton = document.getElementById('audio-toggle-btn');
+  audioToggleButton?.addEventListener('click', async () => {
+    if (audioSynth == null) {
+      //first Press Inititalize tone and create synth
+      await Tone.start();
+      console.log('🎼 Tone started ');
+      audioSynth = new AudioSynth();
+      pushController.setAudioSynth(audioSynth);
+    } else {
+      audioSynth.toggleMute();
+    }
+    if (audioSynth.isMuted) {
+      audioToggleButton.classList.remove('active');
+      audioToggleButton.classList.add('inactive');
+    } else {
+      audioToggleButton.classList.remove('inactive');
+      audioToggleButton.classList.add('active');
+    }
+  });
+
   const ui = new UserInterface(pushController);
 
   const sketch = new p5((p5Instance) => {
