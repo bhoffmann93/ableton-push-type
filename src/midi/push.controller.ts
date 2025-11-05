@@ -145,8 +145,9 @@ export class PushController {
 
   private handleNoteOn(e: any): void {
     const noteNumber = e.data[1];
-
     const midiNote = webmidi.Utilities.buildNote(noteNumber).identifier;
+
+    this.audioSynth?.playNote(midiNote, '16n');
 
     if (noteNumber >= PUSH_BUTTON_RANGE.min && noteNumber <= PUSH_BUTTON_RANGE.max) {
       const row = 7 - Math.floor((noteNumber - PUSH_BUTTON_RANGE.min) / 8);

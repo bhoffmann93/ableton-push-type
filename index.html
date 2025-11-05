@@ -7,6 +7,73 @@
     <title>Push Type</title>
   </head>
   <body>
+    <!-- Audio Context Overlay -->
+    <div
+      id="audio-overlay"
+      role="dialog"
+      aria-label="Enable audio"
+      style="
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.75);
+        z-index: 9999;
+      "
+    >
+      <div
+        style="text-align: center; color: #fff; font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+      >
+        <p style="margin: 0 0 12px; font-size: 16px">Enable audio to use this app</p>
+        <button
+          id="enable-audio-btn"
+          style="
+            padding: 10px 18px;
+            font-size: 16px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            background: #1db954;
+            color: #fff;
+          "
+        >
+          Enable Audio
+        </button>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const btn = document.getElementById('enable-audio-btn');
+        const overlay = document.getElementById('audio-overlay');
+
+        async function enableAudio() {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (!AC) {
+            overlay.remove();
+            return;
+          }
+          const ctx = new AC();
+          try {
+            await ctx.resume();
+          } catch (e) {}
+          // expose for other scripts
+          window.appAudioContext = ctx;
+          overlay.remove();
+        }
+
+        btn.addEventListener('click', enableAudio);
+        // support Enter/Space to activate
+        btn.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            enableAudio();
+          }
+        });
+      })();
+    </script>
+
     <div id="push-container">
       <!-- Top: Alley X & Y knobs -->
       <div id="push-ui">
