@@ -18,6 +18,48 @@ body {
   --button-shadow-active: inset 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
+#audio-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 1);
+  /* backdrop-filter: blur(4px); */
+  z-index: 9999;
+}
+
+#audio-overlay-content {
+  text-align: center;
+  color: #fff;
+  font-family: inherit;
+}
+
+#audio-overlay-content p {
+  margin: 0 0 12px;
+  font-size: 16px;
+}
+
+#enable-audio-btn {
+  padding: 10px 18px;
+  font-family: inherit;
+  font-size: 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: var(--button-gradient);
+  color: #fff;
+  transition: background 0.2s ease;
+}
+
+#enable-audio-btn:hover {
+  background: var(--button-gradient-hover);
+}
+
+#enable-audio-btn:active {
+  background: var(--button-gradient-active);
+}
+
 #push-container {
   display: flex;
   flex-direction: column;
@@ -168,8 +210,6 @@ body {
 .knob-value {
   color: var(--highlight-color);
   font-size: var(--label-font-size);
-  /* font-weight: 600; */
-  /* font-family: 'Courier New', monospace; */
   min-width: 100px;
   text-align: center;
 }
