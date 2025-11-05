@@ -60,6 +60,29 @@ body {
   background: var(--button-gradient-active);
 }
 
+.audio-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  background: var(--button-gradient);
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.audio-toggle.active .audio-icon::before {
+  background: var(--button-gradient-active);
+  content: '🔊';
+}
+
+.audio-toggle:hover {
+  background: var(--button-gradient-hover);
+}
+
 #push-container {
   display: flex;
   flex-direction: column;
