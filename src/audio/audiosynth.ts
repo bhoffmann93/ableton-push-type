@@ -6,8 +6,6 @@ export class AudioSynth {
 
   constructor() {
     this.synth = new Tone.Synth().toDestination();
-    console.log('this.synth: ', this.synth);
-
     console.log('🎼 Tone Audio Synth created ');
   }
 
