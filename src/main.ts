@@ -1,5 +1,6 @@
 // @ts-nocheck
 import p5 from 'p5';
+import * as Tone from 'tone';
 import './style.css';
 import { getDateAndTimeString } from './utils/utils';
 import { easing } from 'ts-easing';
@@ -31,10 +32,69 @@ pushController.initialize().catch((err) => console.error('MIDI initialization fa
 
 const ui = new UserInterface(pushController);
 
+let ready = false;
+let osc;
+let osc2;
+let lfo;
+let filter;
+let filter2;
+let waveform;
+let params = {
+  wavePartFactor: 1.0,
+};
+const initializeAudio = () => {
+  // osc = new Tone.Oscillator();
+  // osc.type = 'sine'; //triangle, sine, square, sawtooth
+  // osc.frequency.value = Tone.Frequency('C3');
+  // osc.toDestination(); //connect osc to audio out
+  // // osc.start();
+
+  // osc2 = new Tone.Oscillator();
+  // osc2.type = 'sine';
+  // osc2.frequency.value = Tone.Frequency('C3');
+  // osc2.toDestination();
+  // // osc2.start();
+
+  // // filter = new Tone.Filter(1000, 'lowpass', -48).toDestination();
+  // // filter2 = new Tone.Filter(1000, 'lowpass', -48).toDestination();
+  // // filter.Q.value = 0.3;
+  // // filter2.Q.value = 0.3;
+  // // osc.connect(filter).start();
+  // // osc2.connect(filter2).start();
+
+  // lfo = new Tone.LFO(0.5, 200, 240);
+  // lfo.connect(osc2.frequency);
+  // lfo.start();
+
+  const synth = new Tone.Synth().toDestination();
+
+  //play a middle 'C' for the duration of an 8th note
+  synth.triggerAttackRelease('C4', '8n');
+
+  // waveform = new Tone.Waveform();
+  // Tone.Destination.connect(waveform);
+  Tone.Destination.volume.value = -24;
+};
+
+// function initializeGUI() {
+//   const oscType = ['sine', 'triangle', 'square', 'sawtooth'];
+
+//   gui = new dat.GUI();
+//   gui.add(Tone.Destination.volume, 'value', -32, -12).step(0.1).name('volume');
+//   gui.add(params, 'wavePartFactor', 0, 1);
+//   gui.add(osc, 'type', oscType).name('osc1 type');
+//   gui.add(osc.frequency, 'value', 0, 330).step(0.1).name('frequency 1');
+//   gui.add(osc2, 'type', oscType).name('osc2 type');
+//   gui.add(lfo.frequency, 'value', 0, 5).step(0.01).name('lfo frequency');
+//   // gui.add(filter.frequency, 'value', 50, 10000).step(0.1).name('filter 1');
+//   // gui.add(filter2.frequency, 'value', 50, 10000).step(0.1).name('filter 2');
+// }
+
 const sketch = new p5((p5Instance) => {
   const p = p5Instance as unknown as p5;
 
   p.setup = () => {
+    initializeAudio();
     p.createCanvas(GRID_CONFIG.canvasDimensions.width, GRID_CONFIG.canvasDimensions.height);
     grid.calculate(p, 1, {
       tilesX: grid.getTilesX(),

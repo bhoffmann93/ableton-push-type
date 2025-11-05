@@ -1,4 +1,5 @@
 import { WebMidi, Utilities, Input, Output } from 'webmidi';
+import * as Tone from 'tone';
 import { MidiData, PushKnobCCMapping, PushButtonMidiCC, PushLEDColor } from '../types/midi.types';
 import { PUSH_CONFIG, PUSH_BUTTON_RANGE, MIDI_CHANNELS } from '../config/push.config';
 import { clamp } from '../utils/utils';
