@@ -1,5 +1,4 @@
-import { WebMidi, Utilities, Input, Output } from 'webmidi';
-import * as Tone from 'tone';
+import * as webmidi from 'webmidi';
 import { MidiData, PushKnobCCMapping, PushButtonMidiCC, PushLEDColor } from '../types/midi.types';
 import { PUSH_CONFIG, PUSH_BUTTON_RANGE, MIDI_CHANNELS } from '../config/push.config';
 import { clamp } from '../utils/utils';
@@ -7,15 +6,18 @@ import { Grid } from '../grid/grid';
 import { GRID_CONFIG } from '../config/grid.config';
 import { EASE_TYPE } from '../types/types';
 import { GRID_METHOD } from '../grid';
+import { AudioSynth } from '../audio/audiosynth';
 
 export class PushController {
-  private midiInput: Input | null = null;
-  private midiOutput: Output | null = null;
+  private midiInput: webmidi.Input | null = null;
+  private midiOutput: webmidi.Output | null = null;
   private midiData: MidiData;
   private grid: Grid;
+  private audioSynth: AudioSynth;
 
-  constructor(grid: Grid, initialData?: Partial<MidiData>) {
+  constructor(grid: Grid, audioSynth: AudioSynth, initialData?: Partial<MidiData>) {
     this.grid = grid;
+    this.audioSynth = audioSynth;
     this.midiData = {
       knob1: initialData?.knob1 ?? PUSH_CONFIG.initialValue,
       knob2: initialData?.knob2 ?? PUSH_CONFIG.initialValue,
@@ -30,7 +32,7 @@ export class PushController {
 
   async initialize(): Promise<void> {
     try {
-      await WebMidi.enable();
+      await webmidi.WebMidi.enable();
       this.setupDevices();
       this.setupListeners();
 
@@ -46,17 +48,17 @@ export class PushController {
   }
 
   private setupDevices(): void {
-    if (WebMidi.inputs.length < 1) {
+    if (webmidi.WebMidi.inputs.length < 1) {
       console.warn('No MIDI device detected.');
       return;
     }
 
-    WebMidi.inputs.forEach((device, index) => {
+    webmidi.WebMidi.inputs.forEach((device, index) => {
       console.log(`${index}: ${device.name}`);
     });
 
-    this.midiInput = WebMidi.getInputByName(PUSH_CONFIG.deviceName) || null;
-    this.midiOutput = WebMidi.getOutputByName(PUSH_CONFIG.deviceName) || null;
+    this.midiInput = webmidi.WebMidi.getInputByName(PUSH_CONFIG.deviceName) || null;
+    this.midiOutput = webmidi.WebMidi.getOutputByName(PUSH_CONFIG.deviceName) || null;
 
     if (!this.midiInput || !this.midiOutput) {
       console.warn(`Could not find device: ${PUSH_CONFIG.deviceName}`);
@@ -119,7 +121,7 @@ export class PushController {
     const knobIndex = controllerNumber - PushKnobCCMapping.KNOB_1;
     const knobKey = `knob${knobIndex + 1}` as keyof MidiData;
 
-    let normalizedValue = Utilities.from7bitToFloat(rawValue);
+    let normalizedValue = webmidi.Utilities.from7bitToFloat(rawValue);
     const increment = PUSH_CONFIG.increment;
 
     if (normalizedValue <= 1 && normalizedValue > 0.5) {
@@ -143,6 +145,8 @@ export class PushController {
 
   private handleNoteOn(e: any): void {
     const noteNumber = e.data[1];
+
+    const midiNote = webmidi.Utilities.buildNote(noteNumber).identifier;
 
     if (noteNumber >= PUSH_BUTTON_RANGE.min && noteNumber <= PUSH_BUTTON_RANGE.max) {
       const row = 7 - Math.floor((noteNumber - PUSH_BUTTON_RANGE.min) / 8);
