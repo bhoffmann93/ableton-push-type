@@ -177,13 +177,11 @@ export class PushController {
       if (PUSH_CONFIG.useColorPairLEDColor) {
         const currentPair = GRID_CONFIG.colorPair;
         const colorPairName = Object.keys(COLOR_PAIRS).find((key) => COLOR_PAIRS[key] === currentPair);
-        if (colorPairName) {
-          ledColor =
-            COLOR_PAIR_PUSH_LED_MAP[colorPairName] ??
-            (() => {
-              console.warn(`No LED Color Mapping found for colorpair ${colorPairName}`);
-              return PUSH_CONFIG.defaultLEDColor;
-            })();
+
+        if (colorPairName && COLOR_PAIR_PUSH_LED_MAP[colorPairName]) {
+          ledColor = COLOR_PAIR_PUSH_LED_MAP[colorPairName];
+        } else {
+          console.warn(`No LED mapping for color pair: ${colorPairName}, using default`);
         }
       }
 

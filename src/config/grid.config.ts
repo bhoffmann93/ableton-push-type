@@ -9,7 +9,7 @@ export const GRID_CONFIG = {
   tilesY: 8,
   alleyX: 0.1,
   alleyY: 0.1,
-  colorPair: COLOR_PAIRS.YELLOW_BUNKER,
+  colorPair: COLOR_PAIRS.MERCURY_RED_ORANGE,
   swapColors: false,
   debug: true,
   gridMethod: GRID_METHOD.Uniform as GRID_METHOD,
