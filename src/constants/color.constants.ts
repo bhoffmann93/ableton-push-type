@@ -1,5 +1,6 @@
 import { HexPair, HslaColor } from '../types/color.types';
 import { hexToHsla } from '../utils/color.utils';
+import { PushLEDColor } from '../midi';
 
 export const BROWN_GREY_LIGHT_GREY: HexPair = ['#4E444A', '#EFEDEF'];
 export const BROWN_GREY_BLUE: HexPair = ['#0F5AEC', '#312926'];
@@ -32,6 +33,14 @@ export const COLOR_PAIRS: Readonly<Record<string, HexPair>> = {
   FLUSH_ORANGE_NERO,
   LAS_PALAMAS_MOON_MIST,
   BLUE_RIBBON_VULCAN,
+};
+
+export const COLOR_PAIR_PUSH_LED_MAP: Record<string, PushLEDColor> = {
+  DARK_GREY_LIGHT_GREY: PushLEDColor.WHITE_HI,
+  BROWN_GREY_LIGHT_GREY: PushLEDColor.WHITE_HI,
+  BROWN_GREY_BLUE: PushLEDColor.BLUE_HI,
+  MERCURY_RED_ORANGE: PushLEDColor.RED_HI,
+  YELLOW_BUNKER: PushLEDColor.YELLOW_HI,
 };
 
 export const HSLA_COLORS: Readonly<Record<string, HslaColor>> = {

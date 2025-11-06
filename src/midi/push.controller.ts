@@ -7,6 +7,7 @@ import { GRID_CONFIG } from '../config/grid.config';
 import { EASE_TYPE } from '../types/types';
 import { GRID_METHOD } from '../grid';
 import { AudioSynth } from '../audio/audiosynth';
+import { COLOR_PAIRS, COLOR_PAIR_PUSH_LED_MAP } from '../constants/color.constants';
 
 export class PushController {
   private midiInput: webmidi.Input | null = null;
@@ -171,7 +172,22 @@ export class PushController {
     // Update LED
     const updatedModule = this.grid.getModule(row, col);
     if (updatedModule && updatedModule.shapeIndex !== this.grid.INITIAL_SHAPE_INDEX) {
-      this.setButtonLED(noteNumber, PushLEDColor.BLUE_HI, true);
+      let ledColor = PUSH_CONFIG.defaultLEDColor;
+
+      if (PUSH_CONFIG.useColorPairLEDColor) {
+        const currentPair = GRID_CONFIG.colorPair;
+        const colorPairName = Object.keys(COLOR_PAIRS).find((key) => COLOR_PAIRS[key] === currentPair);
+        if (colorPairName) {
+          ledColor =
+            COLOR_PAIR_PUSH_LED_MAP[colorPairName] ??
+            (() => {
+              console.warn(`No LED Color Mapping found for colorpair ${colorPairName}`);
+              return PUSH_CONFIG.defaultLEDColor;
+            })();
+        }
+      }
+
+      this.setButtonLED(noteNumber, ledColor, true);
     } else {
       this.setButtonLED(noteNumber, PushLEDColor.BLACK, false);
     }

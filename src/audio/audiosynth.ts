@@ -10,13 +10,13 @@ export class AudioSynth {
   }
 
   playNote(note: string, duration = '8n'): void {
-    // this.synth.triggerAttackRelease(note, duration);
+    this.synth.triggerAttackRelease(note, duration);
 
     const now = Tone.now();
-    const dur = 0.1; //seconds
-    this.synth.triggerAttack(note, now);
+    // const dur = 0.1; //seconds
+    // this.synth.triggerAttack(note, now);
 
-    this.synth.triggerRelease(now + dur);
+    // this.synth.triggerRelease(now + dur);
   }
 
   playFrequency(frequency: number, duration = 100): void {

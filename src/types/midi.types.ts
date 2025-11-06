@@ -16,6 +16,8 @@ export interface MidiConfig {
   clamp0Infinity: boolean;
   initialValue: number;
   deviceName: string;
+  defaultLEDColor: PushLEDColor;
+  useColorPairLEDColor: boolean;
 }
 
 export interface MidiCallbacks {
@@ -59,15 +61,3 @@ export enum PushLEDColor {
   INDIGO_HI = 49,
   VIOLET_HI = 53,
 }
-
-export const COLOR_PAIR_TO_PUSH_LED: Record<string, [PushLEDColor, PushLEDColor]> = {
-  MERCURY_RED_ORANGE: [PushLEDColor.WHITE_HI, PushLEDColor.RED_HI],
-  BLUE_RIBBON_VULCAN: [PushLEDColor.BLUE_HI, PushLEDColor.BLACK],
-  YELLOW_BUNKER: [PushLEDColor.BLACK, PushLEDColor.YELLOW_HI],
-  FLUSH_ORANGE_NERO: [PushLEDColor.ORANGE_HI, PushLEDColor.BLACK],
-  SAN_JUAN_POLO_BLUE: [PushLEDColor.BLUE_HI, PushLEDColor.CYAN_HI],
-  // ... add more mappings
-};
-
-// const colorPairName = 'MERCURY_RED_ORANGE'; // Get this from your config
-//const [primaryLED, secondaryLED] = COLOR_PAIR_TO_PUSH_LED[colorPairName];

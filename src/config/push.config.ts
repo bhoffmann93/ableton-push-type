@@ -1,4 +1,5 @@
 import { MidiConfig } from '../types/midi.types';
+import { PushLEDColor } from '../types/midi.types';
 
 export const PUSH_CONFIG: MidiConfig = {
   increment: 0.05,
@@ -7,6 +8,8 @@ export const PUSH_CONFIG: MidiConfig = {
   clamp0Infinity: true,
   initialValue: 0,
   deviceName: 'Ableton Push User Port',
+  defaultLEDColor: PushLEDColor.BLUE_HI,
+  useColorPairLEDColor: true,
 };
 
 export const PUSH_BUTTON_RANGE = {
