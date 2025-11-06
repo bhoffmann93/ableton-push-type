@@ -121,6 +121,10 @@ export class Grid {
     this.params.easeType = easeTypes[nextIndex];
   }
 
+  toggleDebug(): void {
+    this.params.debug = !this.params.debug;
+  }
+
   getMethod(): GRID_METHOD {
     return this.params.method;
   }

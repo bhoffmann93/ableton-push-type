@@ -1,6 +1,6 @@
 import { MidiData, PushController } from '../midi';
 import { EASE_TYPE } from '../types/types';
-import { GRID_METHOD } from '../grid';
+import { Grid, GRID_METHOD } from '../grid';
 
 export default class UserInterface {
   private pushController: PushController;
@@ -10,12 +10,13 @@ export default class UserInterface {
     console.log('Initial midiData: ', pushController.getMidiData());
   }
 
-  //!should be event based or update only on change
-  public updateKnobs() {
+  //!should be event based or update only on change?
+  public update() {
     const midiData = this.pushController.getMidiData();
+    const grid = this.pushController.getGrid();
 
     this.updateUpperRowKnobValues(midiData);
-    this.updateGridMethodDisplay();
+    this.updateGridMethodDisplay(grid);
   }
 
   private updateUpperRowKnobValues(midiData: MidiData) {
@@ -30,8 +31,7 @@ export default class UserInterface {
     }
   }
 
-  private updateGridMethodDisplay() {
-    const grid = this.pushController.getGrid();
+  private updateGridMethodDisplay(grid: Grid) {
     const gridMethodValue = document.getElementById('grid-method-value');
     const methodNames = Object.values(GRID_METHOD).filter((ease) => typeof ease === 'string');
     if (gridMethodValue)
@@ -40,5 +40,15 @@ export default class UserInterface {
     const easeTypes = Object.values(EASE_TYPE).filter((ease) => typeof ease === 'string');
     const easeTypeElement = document.getElementById('ease-type-value');
     if (easeTypeElement) easeTypeElement.textContent = easeTypes[grid.getEaseType()] || easeTypes[EASE_TYPE.parabola];
+  }
+
+  private flashButton(buttonId: string): void {
+    const button = document.getElementById(buttonId);
+    if (!button) return;
+
+    button.classList.add('active');
+    setTimeout(() => {
+      button.classList.remove('active');
+    }, 150);
   }
 }

@@ -14,6 +14,7 @@ export class PushController {
   private grid: Grid;
   private audioSynth: AudioSynth | null;
   private knobs: Knob[] = [];
+  private shouldResetModuleButtons: boolean;
 
   constructor(grid: Grid, audioSynth: AudioSynth | null) {
     this.grid = grid;
@@ -89,20 +90,20 @@ export class PushController {
         this.grid.cycleShapingFunction();
         break;
       case PushButtonMidiCC.NEW:
-        GRID_CONFIG.shouldSetButtonsToInitialShapeindex = !GRID_CONFIG.shouldSetButtonsToInitialShapeindex;
-        this.flashButton('new-btn');
+        this.shouldResetModuleButtons = !this.shouldResetModuleButtons;
+        // this.flashButton('new-btn');
         break;
       case PushButtonMidiCC.RECORD:
         if (e.rawValue === 127) {
-          GRID_CONFIG.debug = !GRID_CONFIG.debug;
-          this.flashButton('record-btn');
+          this.grid.toggleDebug();
+          // this.flashButton('record-btn');
         }
         break;
       case PushButtonMidiCC.PLAY:
         if (e.rawValue === 127) {
           this.grid.resetAllShapes();
           this.setAllButtonsOff();
-          this.flashButton('play-btn');
+          // this.flashButton('play-btn');
         }
         break;
     }
@@ -145,7 +146,7 @@ export class PushController {
     if (!module) return;
 
     // Cycle through shapes
-    if (GRID_CONFIG.shouldSetButtonsToInitialShapeindex) {
+    if (this.shouldResetModuleButtons) {
       this.grid.setModuleShapeIndex(row, col, this.grid.INITIAL_SHAPE_INDEX);
     } else {
       this.grid.cycleShapeIndex(row, col);
@@ -189,16 +190,6 @@ export class PushController {
     for (let i = PUSH_BUTTON_RANGE.min; i <= PUSH_BUTTON_RANGE.max; i++) {
       this.midiOutput.sendNoteOff(i, { channels: 1 });
     }
-  }
-
-  private flashButton(buttonId: string): void {
-    const button = document.getElementById(buttonId);
-    if (!button) return;
-
-    button.classList.add('active');
-    setTimeout(() => {
-      button.classList.remove('active');
-    }, 150);
   }
 
   getMidiData(): MidiData {

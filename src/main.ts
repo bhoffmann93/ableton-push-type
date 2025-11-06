@@ -57,7 +57,7 @@ async function main() {
 
       grid.calculate(p, time);
       grid.draw(p);
-      ui.updateKnobs();
+      ui.update();
     };
   }, document.getElementById('app') as HTMLElement);
 
