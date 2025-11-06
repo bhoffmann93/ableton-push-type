@@ -33,12 +33,10 @@ body {
 }
 
 .audio-toggle.active .audio-icon::before {
-  background: var(--button-gradient-active);
   content: '🔊';
 }
 
 .audio-toggle.inactive .audio-icon::before {
-  background: var(--button-gradient-active);
   content: '🔇';
 }
 .audio-toggle:hover {
