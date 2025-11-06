@@ -11,7 +11,6 @@ import { AudioSynth } from './audio/audiosynth';
 import * as Tone from 'tone';
 
 const waveSpeed = 0.025;
-const speed = 0.0125;
 
 async function main() {
   const grid = new Grid(GRID_CONFIG);
