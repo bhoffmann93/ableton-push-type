@@ -127,7 +127,19 @@ export class PushController {
       knob.increment();
     }
 
-    if (knobIndex == 0) this.grid.setColorPair(knob.getValue());
+    switch (knob.config.label) {
+      case 'Colors':
+        this.grid.setColorPair(knob.getValue());
+        break;
+      case 'Alley X':
+        this.grid.setAlleyX(knob.getValue());
+        break;
+      case 'Alley Y':
+        this.grid.setAlleyY(knob.getValue());
+        break;
+      default:
+        break;
+    }
   }
 
   private handleNoteOn(e: any): void {

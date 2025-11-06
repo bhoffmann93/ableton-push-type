@@ -141,6 +141,14 @@ export class Grid {
     this.updateColors();
   }
 
+  setAlleyX(value: number): void {
+    this.params.alleyX = value;
+  }
+
+  setAlleyY(value: number): void {
+    this.params.alleyY = value;
+  }
+
   private updateColors(): void {
     const colorPairs = Object.values(COLOR_PAIRS);
     const pair = colorPairs[this.colorPairIndex];

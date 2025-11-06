@@ -24,7 +24,6 @@ export class Knob {
 
   setValue(newValue: number): void {
     this.value = clamp(newValue, this.config.min, this.config.max);
-    console.log('this.value : ', this.value);
   }
 
   getConfig(): KnobConfig {
