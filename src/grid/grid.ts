@@ -107,7 +107,7 @@ export class Grid {
     }
   }
 
-  cycleGridMethod(): void {
+  cycleMethod(): void {
     const methods = Object.values(GRID_METHOD).filter((method) => typeof method === 'number');
     const currentIndex = methods.indexOf(this.params.method);
     const nextIndex = (currentIndex + 1) % methods.length;
@@ -119,6 +119,14 @@ export class Grid {
     const currentIndex = easeTypes.indexOf(this.params.easeType);
     const nextIndex = (currentIndex + 1) % easeTypes.length;
     this.params.easeType = easeTypes[nextIndex];
+  }
+
+  getMethod(): GRID_METHOD {
+    return this.params.method;
+  }
+
+  getEaseType(): EASE_TYPE {
+    return this.params.easeType;
   }
 
   getTilesX(): number {

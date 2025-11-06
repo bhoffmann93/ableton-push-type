@@ -3,8 +3,6 @@ import { MidiData, PushKnobCCMapping, PushButtonMidiCC, PushLEDColor } from '../
 import { PUSH_CONFIG, PUSH_BUTTON_RANGE, MIDI_CHANNELS } from '../config/push.config';
 import { Grid } from '../grid/grid';
 import { GRID_CONFIG } from '../config/grid.config';
-import { EASE_TYPE } from '../types/types';
-import { GRID_METHOD } from '../grid';
 import { AudioSynth } from '../audio/audiosynth';
 import { COLOR_PAIRS, COLOR_PAIR_PUSH_LED_MAP } from '../constants/color.constants';
 import { Knob } from './push.knob';
@@ -85,7 +83,7 @@ export class PushController {
     //handle left knobs and buttons
     switch (controllerNumber) {
       case PushButtonMidiCC.KNOB_LEFT_1:
-        this.grid.cycleGridMethod();
+        this.grid.cycleMethod();
         break;
       case PushButtonMidiCC.KNOB_LEFT_2:
         this.grid.cycleShapingFunction();
@@ -228,5 +226,9 @@ export class PushController {
 
   setAudioSynth(audioSynth: AudioSynth) {
     this.audioSynth = audioSynth;
+  }
+
+  getGrid(): Grid {
+    return this.grid;
   }
 }

@@ -1,5 +1,4 @@
-import { PushController } from '../midi';
-import { GRID_CONFIG } from '../config/grid.config';
+import { MidiData, PushController } from '../midi';
 import { EASE_TYPE } from '../types/types';
 import { GRID_METHOD } from '../grid';
 
@@ -15,7 +14,11 @@ export default class UserInterface {
   public updateKnobs() {
     const midiData = this.pushController.getMidiData();
 
-    //TOP ROW KNOBS
+    this.updateUpperRowKnobValues(midiData);
+    this.updateGridMethodDisplay();
+  }
+
+  private updateUpperRowKnobValues(midiData: MidiData) {
     for (let i = 1; i <= Object.keys(midiData).length; i++) {
       const knobKey = `knob${i}` as keyof typeof midiData;
       // const knobAngle = midiData[knobKey] * 270 - 135; // Map 0-1 to -135° to 135°
@@ -25,15 +28,17 @@ export default class UserInterface {
         knobValue.textContent = midiData[knobKey].toFixed(2);
       }
     }
+  }
 
-    // Update Grid Method display
+  private updateGridMethodDisplay() {
+    const grid = this.pushController.getGrid();
     const gridMethodValue = document.getElementById('grid-method-value');
     const methodNames = Object.values(GRID_METHOD).filter((ease) => typeof ease === 'string');
     if (gridMethodValue)
-      gridMethodValue.textContent = methodNames[GRID_CONFIG.method] || methodNames[GRID_METHOD.Uniform];
+      gridMethodValue.textContent = methodNames[grid.getMethod()] || methodNames[GRID_METHOD.Uniform];
 
     const easeTypes = Object.values(EASE_TYPE).filter((ease) => typeof ease === 'string');
     const easeTypeElement = document.getElementById('ease-type-value');
-    if (easeTypeElement) easeTypeElement.textContent = easeTypes[GRID_CONFIG.easeType] || easeTypes[EASE_TYPE.parabola];
+    if (easeTypeElement) easeTypeElement.textContent = easeTypes[grid.getEaseType()] || easeTypes[EASE_TYPE.parabola];
   }
 }
