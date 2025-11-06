@@ -1,10 +1,264 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: #1a1a1a;
+  font-family: 'Futura', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --label-font-size: 13px;
+  --label-color: #ababab;
+  --knob-letter-spacing: 0.5px;
+  /* --blue-color: #4a9eff; */
+  --highlight-color: rgb(204, 204, 204);
+  --knob-gradient: radial-gradient(circle at 30% 30%, #3a3a3a, #252525);
+  --knob-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5), inset -1px -1px 3px rgba(255, 255, 255, 0.05);
+  --button-gradient: linear-gradient(145deg, #3a3a3a, #252525);
+  --button-gradient-hover: linear-gradient(145deg, #4a4a4a, #353535);
+  --button-gradient-active: linear-gradient(145deg, #252525, #151515);
+  --button-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5), inset -1px -1px 3px rgba(255, 255, 255, 0.05);
+  --button-shadow-hover: inset 1px 1px 3px rgba(0, 0, 0, 0.7), inset -1px -1px 3px rgba(255, 255, 255, 0.1);
+  --button-shadow-active: inset 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.audio-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  background: var(--button-gradient);
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.audio-toggle.active .audio-icon::before {
+  content: '🔊';
+}
+
+.audio-toggle.inactive .audio-icon::before {
+  content: '🔇';
+}
+.audio-toggle:hover {
+  background: var(--button-gradient-hover);
+}
+
+#push-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0px;
+  margin-bottom: 1000px;
+}
+
+#bottom-row {
+  display: flex;
+  flex-direction: row;
+  gap: 0px;
+  align-items: flex-start;
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  position: absolute;
-  top: 10%;
-  left: 1%;
 }
+
+.push-title {
+  position: absolute;
+  left: 59px;
+  top: 48px;
+  color: var(--label-color);
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: 0px;
+  margin: 0;
+}
+
+/* Push UI */
+#push-ui {
+  background: #1a1a1a;
+  padding: 35px;
+  padding-left: 242px;
+  padding-bottom: 30px;
+  /* margin-left: calc(210px); */
+  /* border-radius: 8px; */
+}
+
+/* Button Knobs (Left Side) */
+#button-knobs {
+  display: flex;
+  flex-direction: row;
+  gap: 0px;
+  padding: 20px;
+  padding-top: 10px;
+}
+
+.button-knob-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  min-width: 100px;
+}
+
+.button-knob {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.1s ease;
+}
+
+.button-knob::before {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--knob-gradient);
+  box-shadow: var(--knob-shadow);
+}
+
+.button-knob:hover {
+  background: linear-gradient(145deg, #3a3a3a, #2a2a2a);
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.7), inset -2px -2px 5px rgba(255, 255, 255, 0.1);
+}
+
+.button-knob:active {
+  background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+  box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.8);
+}
+
+.button-icon {
+  font-size: 24px;
+  color: var(--highlight-color);
+  text-shadow: 0 0 8px rgba(74, 158, 255, 0.6);
+  z-index: 1;
+  position: relative;
+}
+
+.knobs-row {
+  display: flex;
+  gap: 0px;
+}
+
+.knob-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  min-width: 100px;
+}
+
+.knob {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: none;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+}
+
+.knob::before {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--knob-gradient);
+  box-shadow: var(--knob-shadow);
+}
+
+.knob-label {
+  color: var(--label-color);
+  font-size: var(--label-font-size);
+  /* text-transform: uppercase; */
+  letter-spacing: var(--knob-letter-spacing);
+  font-weight: 500;
+  margin-bottom: -5px;
+}
+
+.knob-value {
+  color: var(--highlight-color);
+  font-size: var(--label-font-size);
+  min-width: 100px;
+  text-align: center;
+}
+
+/* Canvas with controls wrapper */
+#canvas-with-controls {
+  position: relative;
+  display: inline-block;
+}
+
+/* Transport Buttons (bottom left) */
+#transport-buttons {
+  position: absolute;
+  bottom: 10px;
+  left: -155px; /* Offset to center between Grid Method and Ease Type buttons */
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 0;
+}
+
+.transport-button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.transport-button {
+  width: 70px;
+  height: 70px;
+  border-radius: 4px;
+  background: var(--button-gradient);
+  box-shadow: var(--button-shadow);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.1s ease;
+}
+
+.transport-button:hover {
+  background: var(--button-gradient-hover);
+  box-shadow: var(--button-shadow-hover);
+}
+
+.transport-button.active {
+  background: var(--button-gradient-active);
+  box-shadow: var(--button-shadow-active);
+}
+
+.transport-icon {
+  font-size: 24px;
+  color: var(--highlight-color);
+  text-shadow: 0 0 6px rgba(74, 158, 255, 0.6);
+}
+
+.transport-label {
+  color: var(--label-color);
+  font-size: var(--label-font-size);
+  /* text-transform: uppercase; */
+  letter-spacing: var(--knob-letter-spacing);
+  font-weight: 500;
+}
+
+/* .transport-button:hover + .transport-label {
+  color: #aaa;
+} */

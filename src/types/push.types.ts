@@ -10,12 +10,9 @@ export interface MidiData {
 }
 
 export interface MidiConfig {
-  increment: number;
-  incrementFine: number;
-  clamp01: boolean;
-  clamp0Infinity: boolean;
-  initialValue: number;
   deviceName: string;
+  defaultLEDColor: PushLEDColor;
+  useColorPairLEDColor: boolean;
 }
 
 export interface MidiCallbacks {
@@ -28,7 +25,16 @@ export interface MidiCallbacks {
   onButtonPress?: (row: number, col: number) => void;
 }
 
-export enum PushButton {
+export interface KnobConfig {
+  label: string;
+  increment: number;
+  min: number;
+  max: number;
+  initialValue: number;
+}
+
+//https://github.com/Ableton/push-interface/blob/main/doc/AbletonPush2MIDIDisplayInterface.asc#MIDI%20Mapping
+export enum PushButtonMidiCC {
   KNOB_LEFT_1 = 14,
   KNOB_LEFT_2 = 15,
   NEW = 87,
@@ -36,7 +42,7 @@ export enum PushButton {
   PLAY = 85,
 }
 
-export enum PushKnob {
+export enum PushKnobCCMapping {
   KNOB_1 = 71,
   KNOB_2 = 72,
   KNOB_3 = 73,

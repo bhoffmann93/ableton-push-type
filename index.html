@@ -2,12 +2,136 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="icon" type="image/svg+png" href="static/img/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Grid</title>
+    <title>Push Type</title>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="push-container">
+      <button id="audio-toggle-btn" class="audio-toggle inactive" aria-label="Toggle audio">
+        <span class="audio-icon"></span>
+      </button>
+      <!-- Top: Alley X & Y knobs -->
+      <div id="push-ui">
+        <h1 class="push-title">Push Tool</h1>
+        <div class="knobs-row">
+          <div class="knob-container">
+            <div class="knob" id="knob1" style="--rotation: 0deg">
+              <div class="knob-indicator"></div>
+            </div>
+            <span class="knob-label">Colors</span>
+            <span class="knob-value" id="knob1-value">0.00</span>
+          </div>
+
+          <div class="knob-container">
+            <div class="knob" id="knob2" style="--rotation: 0deg">
+              <div class="knob-indicator"></div>
+            </div>
+            <span class="knob-label">Alley X</span>
+            <span class="knob-value" id="knob2-value">0.00</span>
+          </div>
+
+          <div class="knob-container">
+            <div class="knob" id="knob3" style="--rotation: 0deg">
+              <div class="knob-indicator"></div>
+            </div>
+            <span class="knob-label">Alley Y</span>
+            <span class="knob-value" id="knob3-value">0</span>
+          </div>
+
+          <div class="knob-container">
+            <div class="knob" id="knob4" style="--rotation: 0deg">
+              <div class="knob-indicator"></div>
+            </div>
+            <span class="knob-label">Knob 4</span>
+            <span class="knob-value" id="knob4-value">0.00</span>
+          </div>
+
+          <div class="knob-container">
+            <div class="knob" id="knob5" style="--rotation: 0deg">
+              <div class="knob-indicator"></div>
+            </div>
+            <span class="knob-label">Knob 5</span>
+            <span class="knob-value" id="knob5-value">0.00</span>
+          </div>
+
+          <div class="knob-container">
+            <div class="knob" id="knob6" style="--rotation: 0deg">
+              <div class="knob-indicator"></div>
+            </div>
+            <span class="knob-label">Knob 6</span>
+            <span class="knob-value" id="knob6-value">0.00</span>
+          </div>
+
+          <div class="knob-container">
+            <div class="knob" id="knob7" style="--rotation: 0deg">
+              <div class="knob-indicator"></div>
+            </div>
+            <span class="knob-label">Knob 7</span>
+            <span class="knob-value" id="knob7-value">0.00</span>
+          </div>
+
+          <div class="knob-container">
+            <div class="knob" id="knob8" style="--rotation: 0deg">
+              <div class="knob-indicator"></div>
+            </div>
+            <span class="knob-label">Knob 8</span>
+            <span class="knob-value" id="knob8-value">0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom row: Button knobs on left, canvas on right -->
+      <div id="bottom-row">
+        <!-- Button Knobs (left side) -->
+        <div id="button-knobs">
+          <div class="button-knob-container">
+            <button class="button-knob" id="grid-method-btn">
+              <span class="button-icon"></span>
+            </button>
+            <span class="knob-label">Grid Method</span>
+            <span class="knob-value" id="grid-method-value">EQUAL</span>
+          </div>
+
+          <div class="button-knob-container">
+            <button class="button-knob" id="shaping-function-btn">
+              <span class="button-icon"></span>
+            </button>
+            <span class="knob-label">Ease</span>
+            <span class="knob-value" id="ease-type-value">parabola</span>
+          </div>
+        </div>
+
+        <div id="canvas-with-controls">
+          <div id="app"></div>
+
+          <!-- Transport Buttons (bottom left) -->
+          <div id="transport-buttons">
+            <div class="transport-button-container">
+              <button class="transport-button" id="new-btn">
+                <span class="transport-icon"></span>
+              </button>
+              <span class="transport-label">Reset Module</span>
+            </div>
+
+            <div class="transport-button-container">
+              <button class="transport-button" id="record-btn">
+                <span class="transport-icon"></span>
+              </button>
+              <span class="transport-label">Toggle Grid</span>
+            </div>
+
+            <div class="transport-button-container">
+              <button class="transport-button" id="play-btn">
+                <span class="transport-icon"></span>
+              </button>
+              <span class="transport-label">Reset All</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
