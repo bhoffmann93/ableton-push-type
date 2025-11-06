@@ -1,12 +1,7 @@
-import { MidiConfig } from '../types/midi.types';
-import { PushLEDColor } from '../types/midi.types';
+import { MidiConfig } from '../types/push.types';
+import { PushLEDColor } from '../types/push.types';
 
 export const PUSH_CONFIG: MidiConfig = {
-  increment: 0.05,
-  incrementFine: 0.001,
-  clamp01: false,
-  clamp0Infinity: true,
-  initialValue: 0,
   deviceName: 'Ableton Push User Port',
   defaultLEDColor: PushLEDColor.BLUE_HI,
   useColorPairLEDColor: true,

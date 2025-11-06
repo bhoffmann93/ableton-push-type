@@ -1,5 +1,5 @@
 import p5 from 'p5';
-import { GridModule } from './grid.types';
+import { GridModule, GridParams } from './grid.types';
 import { ShapeRenderer } from './shape.renderer';
 
 export class GridRenderer {
@@ -14,13 +14,9 @@ export class GridRenderer {
     modules: GridModule[][],
     scaleFactors: { x: number; y: number }[],
     scaleFactor: { x: number; y: number },
-    tilesX: number,
-    tilesY: number,
-    primaryColor: string,
-    secondaryColor: string,
-    speed: number,
-    debug: boolean
+    params: GridParams
   ): void {
+    const { tilesX, tilesY, primaryColor, secondaryColor, debug } = params;
     p.background(primaryColor);
     p.fill(secondaryColor);
     p.noStroke();

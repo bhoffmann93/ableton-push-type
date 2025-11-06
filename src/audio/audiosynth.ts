@@ -5,7 +5,8 @@ export class AudioSynth {
   public isMuted = false;
 
   constructor() {
-    this.synth = new Tone.Synth().toDestination();
+    // this.synth = new Tone.Synth().toDestination();
+    this.synth = new Tone.PolySynth().toDestination();
     console.log('🎼 Tone Audio Synth created ');
   }
 

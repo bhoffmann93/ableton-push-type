@@ -3,7 +3,6 @@ import p5 from 'p5';
 import './style.css';
 import { getDateAndTimeString } from './utils/utils';
 import { easing } from 'ts-easing';
-import CubicBezier from '@thednp/bezier-easing';
 import { PushController } from './midi';
 import { GRID_CONFIG } from './config/grid.config';
 import { Grid } from './grid';
@@ -14,22 +13,12 @@ import * as Tone from 'tone';
 const waveSpeed = 0.025;
 const speed = 0.0125;
 
-const bezierValues = [0.5, 0, 0.5, 1];
-const easeCubicBezierX = new CubicBezier(...bezierValues);
-const easeCubicBezierY = new CubicBezier(...bezierValues);
-
-const primaryColor = GRID_CONFIG.swapColors ? GRID_CONFIG.colorPair[1] : GRID_CONFIG.colorPair[0];
-const secondaryColor = GRID_CONFIG.swapColors ? GRID_CONFIG.colorPair[0] : GRID_CONFIG.colorPair[1];
-
 async function main() {
-  const grid = new Grid(GRID_CONFIG.tilesX, GRID_CONFIG.tilesY);
+  const grid = new Grid(GRID_CONFIG);
 
   let audioSynth: AudioSynth | null = null;
-  const pushController = new PushController(grid, audioSynth, {
-    knob1: GRID_CONFIG.alleyX,
-    knob2: GRID_CONFIG.alleyY,
-  });
 
+  const pushController = new PushController(grid, audioSynth);
   pushController.initialize().catch((err) => console.error('MIDI initialization failed:', err));
 
   const audioToggleButton = document.getElementById('audio-toggle-btn');
@@ -59,36 +48,15 @@ async function main() {
 
     p.setup = () => {
       p.createCanvas(GRID_CONFIG.canvasDimensions.width, GRID_CONFIG.canvasDimensions.height);
-      grid.calculate(p, 1, {
-        tilesX: grid.getTilesX(),
-        tilesY: grid.getTilesY(),
-        alleyX: GRID_CONFIG.alleyX,
-        alleyY: GRID_CONFIG.alleyY,
-        method: GRID_CONFIG.gridMethod,
-        easeType: GRID_CONFIG.easeType,
-        mirrorInput: GRID_CONFIG.mirrorInput,
-        easeCubicBezierX,
-        easeCubicBezierY,
-      });
+      grid.calculate(p, 0);
     };
 
     p.draw = () => {
       let time = Math.sin(p.frameCount * waveSpeed) * 0.5 + 0.5;
       time = easing.outSine(time);
 
-      grid.calculate(p, time, {
-        tilesX: grid.getTilesX(),
-        tilesY: grid.getTilesY(),
-        alleyX: GRID_CONFIG.alleyX,
-        alleyY: GRID_CONFIG.alleyY,
-        method: GRID_CONFIG.gridMethod,
-        easeType: GRID_CONFIG.easeType,
-        mirrorInput: GRID_CONFIG.mirrorInput,
-        easeCubicBezierX,
-        easeCubicBezierY,
-      });
-
-      grid.draw(p, primaryColor, secondaryColor, speed, GRID_CONFIG.debug);
+      grid.calculate(p, time);
+      grid.draw(p);
       ui.updateKnobs();
     };
   }, document.getElementById('app') as HTMLElement);

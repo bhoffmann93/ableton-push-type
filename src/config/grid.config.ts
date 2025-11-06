@@ -12,7 +12,7 @@ export const GRID_CONFIG = {
   colorPair: COLOR_PAIRS.MERCURY_RED_ORANGE,
   swapColors: false,
   debug: true,
-  gridMethod: GRID_METHOD.Uniform as GRID_METHOD,
+  method: GRID_METHOD.Uniform as GRID_METHOD,
   easeType: EASE_TYPE.parabola as EASE_TYPE,
   shouldSetButtonsToInitialShapeindex: false,
   mirrorInput: EASE_MIRROR_TYPE.none as EASE_MIRROR_TYPE,
