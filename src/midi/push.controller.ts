@@ -137,8 +137,6 @@ export class PushController {
       case 'Alley Y':
         this.grid.setAlleyY(knob.getValue());
         break;
-      default:
-        break;
     }
   }
 
