@@ -2,12 +2,15 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+png" href="static/img/favicon" />
+    <link rel="icon" type="image/svg+png" href="static/img/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Push Type</title>
   </head>
   <body>
     <div id="push-container">
+      <button id="audio-toggle-btn" class="audio-toggle inactive" aria-label="Toggle audio">
+        <span class="audio-icon"></span>
+      </button>
       <!-- Top: Alley X & Y knobs -->
       <div id="push-ui">
         <h1 class="push-title">Push Tool</h1>
@@ -115,7 +118,7 @@
               <button class="transport-button" id="record-btn">
                 <span class="transport-icon"></span>
               </button>
-              <span class="transport-label">Show Grid</span>
+              <span class="transport-label">Toggle Grid</span>
             </div>
 
             <div class="transport-button-container">
