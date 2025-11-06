@@ -8,7 +8,7 @@ import { COLOR_PAIRS, COLOR_PAIR_PUSH_LED_MAP } from '../constants/color.constan
 import { Knob } from './push.knob';
 import { KNOB_CONFIGS } from '../config/knob.config';
 
-export class PushController {
+export class PushController extends EventTarget {
   private midiInput: webmidi.Input | null = null;
   private midiOutput: webmidi.Output | null = null;
   private grid: Grid;
@@ -17,6 +17,7 @@ export class PushController {
   private shouldResetModuleButtons = false;
 
   constructor(grid: Grid, audioSynth: AudioSynth | null) {
+    super();
     this.grid = grid;
     this.audioSynth = audioSynth;
     this.knobs = KNOB_CONFIGS.map((config, index) => new Knob(index, config));
@@ -85,25 +86,47 @@ export class PushController {
     switch (controllerNumber) {
       case PushButtonMidiCC.KNOB_LEFT_1:
         this.grid.cycleMethod();
+        this.dispatchEvent(
+          new CustomEvent('gridMethodChange', {
+            detail: { method: this.grid.getMethod() },
+          })
+        );
         break;
       case PushButtonMidiCC.KNOB_LEFT_2:
         this.grid.cycleShapingFunction();
+        this.dispatchEvent(
+          new CustomEvent('easeTypeChange', {
+            detail: { easeType: this.grid.getEaseType() },
+          })
+        );
         break;
       case PushButtonMidiCC.NEW:
         this.shouldResetModuleButtons = !this.shouldResetModuleButtons;
-        // this.flashButton('new-btn');
+        this.dispatchEvent(
+          new CustomEvent('flash', {
+            detail: { buttonId: 'new-btn' },
+          })
+        );
         break;
       case PushButtonMidiCC.RECORD:
         if (e.rawValue === 127) {
           this.grid.toggleDebug();
-          // this.flashButton('record-btn');
+          this.dispatchEvent(
+            new CustomEvent('flash', {
+              detail: { buttonId: 'record-btn' },
+            })
+          );
         }
         break;
       case PushButtonMidiCC.PLAY:
         if (e.rawValue === 127) {
           this.grid.resetAllShapes();
           this.setAllButtonsOff();
-          // this.flashButton('play-btn');
+          this.dispatchEvent(
+            new CustomEvent('flash', {
+              detail: { buttonId: 'play-btn' },
+            })
+          );
         }
         break;
     }
@@ -138,6 +161,16 @@ export class PushController {
         this.grid.setAlleyY(knob.getValue());
         break;
     }
+
+    this.dispatchEvent(
+      new CustomEvent('knobChange', {
+        detail: {
+          knobIndex: knob.id + 1,
+          value: knob.getValue(),
+          label: knob.config.label,
+        },
+      })
+    );
   }
 
   private handleNoteOn(e: any): void {
@@ -229,9 +262,5 @@ export class PushController {
 
   setAudioSynth(audioSynth: AudioSynth) {
     this.audioSynth = audioSynth;
-  }
-
-  getGrid(): Grid {
-    return this.grid;
   }
 }
