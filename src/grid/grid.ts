@@ -6,12 +6,15 @@ import { setRandomDimensions } from './grid.utils';
 import CubicBezier from '@thednp/bezier-easing';
 import { GRID_CONFIG } from '../config/grid.config';
 import { EASE_TYPE } from '../types/types';
+import { COLOR_PAIRS } from '../constants/color.constants';
 
 export class Grid {
   private modules: GridModule[][] = [];
   private calculator: GridCalculator;
   private renderer: GridRenderer;
   private params: GridParams;
+  private colorPairIndex = 0;
+  private swapColors = false;
 
   readonly INITIAL_SHAPE_INDEX = 0;
   readonly AMOUNT_OF_SHAPES = 15;
@@ -31,6 +34,7 @@ export class Grid {
       easeCubicBezierY: this.easeCubicBezierY,
       randomColumnWidths: [],
       randomRowHeights: [],
+      // colorPair: config.swapColors ? ([config.colorPair[1], config.colorPair[0]] as HexPair) : config.colorPair,
       primaryColor: config.swapColors ? config.colorPair[1] : config.colorPair[0],
       secondaryColor: config.swapColors ? config.colorPair[0] : config.colorPair[1],
       debug: config.debug,
@@ -119,6 +123,35 @@ export class Grid {
     const currentIndex = easeTypes.indexOf(this.params.easeType);
     const nextIndex = (currentIndex + 1) % easeTypes.length;
     this.params.easeType = easeTypes[nextIndex];
+  }
+
+  cycleColorPair(): void {
+    const colorPairs = Object.values(COLOR_PAIRS);
+    this.colorPairIndex = (this.colorPairIndex + 1) % colorPairs.length;
+    this.updateColors();
+  }
+
+  setColorPair(index: number): void {
+    this.colorPairIndex = index;
+    this.updateColors();
+  }
+
+  toggleSwapColors(): void {
+    this.swapColors = !this.swapColors;
+    this.updateColors();
+  }
+
+  private updateColors(): void {
+    const colorPairs = Object.values(COLOR_PAIRS);
+    const pair = colorPairs[this.colorPairIndex];
+
+    if (this.swapColors) {
+      this.params.primaryColor = pair[1];
+      this.params.secondaryColor = pair[0];
+    } else {
+      this.params.primaryColor = pair[0];
+      this.params.secondaryColor = pair[1];
+    }
   }
 
   toggleDebug(): void {

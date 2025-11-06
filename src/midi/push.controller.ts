@@ -14,7 +14,7 @@ export class PushController {
   private grid: Grid;
   private audioSynth: AudioSynth | null;
   private knobs: Knob[] = [];
-  private shouldResetModuleButtons: boolean;
+  private shouldResetModuleButtons = false;
 
   constructor(grid: Grid, audioSynth: AudioSynth | null) {
     this.grid = grid;
@@ -126,6 +126,8 @@ export class PushController {
     } else if (normalizedValue < 0.5 && normalizedValue > 0) {
       knob.increment();
     }
+
+    if (knobIndex == 0) this.grid.setColorPair(knob.getValue());
   }
 
   private handleNoteOn(e: any): void {

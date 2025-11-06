@@ -1,6 +1,6 @@
 import { COLOR_PAIRS } from '../constants/color.constants';
-import { KnobConfig } from '../midi';
 import { GRID_CONFIG } from './grid.config';
+import { KnobConfig } from '../midi';
 
 export const KNOB_CONFIGS: KnobConfig[] = [
   {
@@ -9,6 +9,7 @@ export const KNOB_CONFIGS: KnobConfig[] = [
     min: 0,
     max: Object.keys(COLOR_PAIRS).length - 1,
     initialValue: Object.keys(COLOR_PAIRS).findIndex((key) => COLOR_PAIRS[key] === GRID_CONFIG.colorPair),
+    wrap: true,
   },
   {
     label: 'Alley X',
@@ -16,6 +17,7 @@ export const KNOB_CONFIGS: KnobConfig[] = [
     min: 0,
     max: 1,
     initialValue: GRID_CONFIG.alleyX,
+    wrap: false,
   },
   {
     label: 'Alley Y',
@@ -23,6 +25,7 @@ export const KNOB_CONFIGS: KnobConfig[] = [
     min: 0,
     max: 1,
     initialValue: GRID_CONFIG.alleyY,
+    wrap: false,
   },
   {
     label: 'Knob 4',
@@ -30,6 +33,7 @@ export const KNOB_CONFIGS: KnobConfig[] = [
     min: 1,
     max: 20,
     initialValue: 0,
+    wrap: true,
   },
   {
     label: 'Knob 5',
@@ -37,6 +41,7 @@ export const KNOB_CONFIGS: KnobConfig[] = [
     min: 0,
     max: 10,
     initialValue: 1,
+    wrap: true,
   },
   {
     label: 'Knob 6',
@@ -44,6 +49,7 @@ export const KNOB_CONFIGS: KnobConfig[] = [
     min: 0,
     max: 10,
     initialValue: 1,
+    wrap: true,
   },
   {
     label: 'Knob 7',
@@ -51,6 +57,7 @@ export const KNOB_CONFIGS: KnobConfig[] = [
     min: 0,
     max: 10,
     initialValue: 1,
+    wrap: true,
   },
   {
     label: 'Knob 8',
@@ -58,5 +65,6 @@ export const KNOB_CONFIGS: KnobConfig[] = [
     min: 0,
     max: 10,
     initialValue: 1,
+    wrap: true,
   },
 ];
