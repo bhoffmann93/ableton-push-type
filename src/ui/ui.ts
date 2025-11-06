@@ -7,10 +7,13 @@ export default class UserInterface {
 
   constructor(pushController: PushController) {
     this.pushController = pushController;
-    console.log('Initial midiData: ', pushController.getMidiData());
+
+    this.pushController.addEventListener('flash', (event: Event) => {
+      const customEvent = event as CustomEvent;
+      this.flashButton(customEvent.detail.buttonId);
+    });
   }
 
-  //!should be event based or update only on change?
   public update() {
     const midiData = this.pushController.getMidiData();
     const grid = this.pushController.getGrid();
@@ -42,7 +45,7 @@ export default class UserInterface {
     if (easeTypeElement) easeTypeElement.textContent = easeTypes[grid.getEaseType()] || easeTypes[EASE_TYPE.parabola];
   }
 
-  private flashButton(buttonId: string): void {
+  flashButton = (buttonId: string): void => {
     const button = document.getElementById(buttonId);
     if (!button) return;
 
@@ -50,5 +53,5 @@ export default class UserInterface {
     setTimeout(() => {
       button.classList.remove('active');
     }, 150);
-  }
+  };
 }
