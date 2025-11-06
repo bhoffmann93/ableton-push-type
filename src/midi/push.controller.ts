@@ -151,6 +151,16 @@ export class PushController extends EventTarget {
         this.grid.setAlleyY(knob.getValue());
         break;
     }
+
+    this.dispatchEvent(
+      new CustomEvent('knobChange', {
+        detail: {
+          knobIndex: knob.id + 1,
+          value: knob.getValue(),
+          label: knob.config.label,
+        },
+      })
+    );
   }
 
   private handleNoteOn(e: any): void {

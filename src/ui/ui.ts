@@ -12,25 +12,27 @@ export default class UserInterface {
       const customEvent = event as CustomEvent;
       this.flashButton(customEvent.detail.buttonId);
     });
+
+    this.pushController.addEventListener('knobChange', (e: Event) => {
+      const event = e as CustomEvent;
+      this.updateKnobDisplay(event.detail.knobIndex, event.detail.value);
+    });
+
+    this.pushController.addEventListener('gridMethodChange', (e: Event) => {
+      const event = e as CustomEvent;
+      this.updateGridMethodDisplay(event.detail.method);
+    });
+
+    // this.pushController.addEventListener('easeTypeChange', (e: Event) => {
+    //   const event = e as CustomEvent;
+    //   this.updateEaseTypeDisplay(event.detail.easeType);
+    // });
   }
 
-  public update() {
-    const midiData = this.pushController.getMidiData();
-    const grid = this.pushController.getGrid();
-
-    this.updateUpperRowKnobValues(midiData);
-    this.updateGridMethodDisplay(grid);
-  }
-
-  private updateUpperRowKnobValues(midiData: MidiData) {
-    for (let i = 1; i <= Object.keys(midiData).length; i++) {
-      const knobKey = `knob${i}` as keyof typeof midiData;
-      // const knobAngle = midiData[knobKey] * 270 - 135; // Map 0-1 to -135° to 135°
-      // document.getElementById(`knob${i}`)?.style.setProperty('--rotation', `${knobAngle}deg`);
-      const knobValue = document.getElementById(`knob${i}-value`);
-      if (knobValue) {
-        knobValue.textContent = midiData[knobKey].toFixed(2);
-      }
+  private updateKnobDisplay(index: number, value: number) {
+    const knobValue = document.getElementById(`knob${index}-value`);
+    if (knobValue) {
+      knobValue.textContent = value.toFixed(2);
     }
   }
 
