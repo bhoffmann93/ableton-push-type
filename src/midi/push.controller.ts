@@ -7,6 +7,7 @@ import { AudioSynth } from '../audio/audiosynth';
 import { COLOR_PAIRS, COLOR_PAIR_PUSH_LED_MAP } from '../constants/color.constants';
 import { Knob } from './push.knob';
 import { KNOB_CONFIGS } from '../config/knob.config';
+import { HexPair } from '../types/color.types';
 
 export class PushController extends EventTarget {
   private midiInput: webmidi.Input | null = null;
@@ -203,8 +204,12 @@ export class PushController extends EventTarget {
       let ledColor = PUSH_CONFIG.defaultLEDColor;
 
       if (PUSH_CONFIG.useColorPairLEDColor) {
-        const currentPair = GRID_CONFIG.colorPair;
-        const colorPairName = Object.keys(COLOR_PAIRS).find((key) => COLOR_PAIRS[key] === currentPair);
+        const currentPair = this.grid.getColorPair();
+        const colorPairName = Object.keys(COLOR_PAIRS).find(
+          (key) =>
+            (COLOR_PAIRS[key][0] === currentPair[0] && COLOR_PAIRS[key][1] === currentPair[1]) ||
+            (COLOR_PAIRS[key][0] === currentPair[1] && COLOR_PAIRS[key][1] === currentPair[0])
+        );
 
         if (colorPairName && COLOR_PAIR_PUSH_LED_MAP[colorPairName]) {
           ledColor = COLOR_PAIR_PUSH_LED_MAP[colorPairName];
