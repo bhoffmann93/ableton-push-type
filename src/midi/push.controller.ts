@@ -86,9 +86,19 @@ export class PushController extends EventTarget {
     switch (controllerNumber) {
       case PushButtonMidiCC.KNOB_LEFT_1:
         this.grid.cycleMethod();
+        this.dispatchEvent(
+          new CustomEvent('gridMethodChange', {
+            detail: { method: this.grid.getMethod() },
+          })
+        );
         break;
       case PushButtonMidiCC.KNOB_LEFT_2:
         this.grid.cycleShapingFunction();
+        this.dispatchEvent(
+          new CustomEvent('easeTypeChange', {
+            detail: { easeType: this.grid.getEaseType() },
+          })
+        );
         break;
       case PushButtonMidiCC.NEW:
         this.shouldResetModuleButtons = !this.shouldResetModuleButtons;
@@ -252,9 +262,5 @@ export class PushController extends EventTarget {
 
   setAudioSynth(audioSynth: AudioSynth) {
     this.audioSynth = audioSynth;
-  }
-
-  getGrid(): Grid {
-    return this.grid;
   }
 }
