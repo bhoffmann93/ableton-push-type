@@ -1,30 +1,14 @@
 import p5 from 'p5';
-import { GridModule, GRID_METHOD } from './grid.types';
+import { GridModule, GRID_METHOD, GridParams } from './grid.types';
 import { factory } from '../factory';
-import { EASE_TYPE, EASE_MIRROR_TYPE } from '../types/types';
 import { peakify, clamp } from '../utils/utils';
-import CubicBezier from '@thednp/bezier-easing';
 import { isAlley } from './grid.utils';
-
-export interface GridCalculationParams {
-  tilesX: number;
-  tilesY: number;
-  alleyX: number;
-  alleyY: number;
-  method: GRID_METHOD;
-  easeType: EASE_TYPE;
-  mirrorInput: EASE_MIRROR_TYPE;
-  easeCubicBezierX: CubicBezier;
-  easeCubicBezierY: CubicBezier;
-  randomColumnWidths: number[];
-  randomRowHeights: number[];
-}
 
 export class GridCalculator {
   private scaleFactor = { x: 1, y: 1 };
   private scaleFactors: { x: number; y: number }[] = [];
 
-  calculate(p: p5, time: number, modules: GridModule[][], params: GridCalculationParams): void {
+  calculate(p: p5, time: number, modules: GridModule[][], params: GridParams): void {
     const tileWo = p.width / params.tilesX;
     const tileHo = p.height / params.tilesY;
     let sumWidth = 0;
@@ -44,10 +28,10 @@ export class GridCalculator {
         const aspect = tileWo / tileHo;
 
         switch (params.method) {
-          case GRID_METHOD.Random:
-            eased.w = isAlley(iX) ? params.alleyX : params.randomColumnWidths[iX];
-            eased.h = isAlley(iY) ? params.alleyX * aspect : params.randomRowHeights[iY];
-            break;
+          // case GRID_METHOD.Random:
+          //   eased.w = isAlley(iX) ? params.alleyX : params.randomColumnWidths[iX];
+          //   eased.h = isAlley(iY) ? params.alleyX * aspect : params.randomRowHeights[iY];
+          //   break;
           case GRID_METHOD.StaticAlley:
             eased.w = isAlley(iX) ? params.alleyX : 1;
             eased.h = isAlley(iY) ? params.alleyX * aspect : 1;

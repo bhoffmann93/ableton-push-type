@@ -1,12 +1,13 @@
 import { HexPair, HslaColor } from '../types/color.types';
 import { hexToHsla } from '../utils/color.utils';
+import { PushLEDColor } from '../midi';
 
 export const BROWN_GREY_LIGHT_GREY: HexPair = ['#4E444A', '#EFEDEF'];
-export const BROWN_GREY_BLUE: HexPair = ['#0F5AEC', '#312926'];
+export const BROWN_GREY_BLUE: HexPair = ['#312926', '#0F5AEC'];
 export const DARK_GREY_LIGHT_GREY: HexPair = ['#727272ff', '#d0ced0ff'];
 //calm
 export const SAN_JUAN_POLO_BLUE: HexPair = ['#2C4C76', '#96BCE2'];
-export const CUREULEAN_QUILL: HexPair = ['#3D54C7', '#D2CFCD'];
+export const CUREULEAN_QUILL: HexPair = ['#D2CFCD', '#3D54C7'];
 export const TORY_SHAKESPEARE: HexPair = ['#204FA7', '#050606ff'];
 export const EMERALD_TIBER_DARK: HexPair = ['#058C4E', '#0D3135'];
 //expressive
@@ -32,6 +33,23 @@ export const COLOR_PAIRS: Readonly<Record<string, HexPair>> = {
   FLUSH_ORANGE_NERO,
   LAS_PALAMAS_MOON_MIST,
   BLUE_RIBBON_VULCAN,
+};
+
+export const COLOR_PAIR_PUSH_LED_MAP: Record<string, PushLEDColor> = {
+  DARK_GREY_LIGHT_GREY: PushLEDColor.WHITE_HI,
+  BROWN_GREY_LIGHT_GREY: PushLEDColor.WHITE_HI,
+  BROWN_GREY_BLUE: PushLEDColor.BLUE_HI,
+  //calm
+  SAN_JUAN_POLO_BLUE: PushLEDColor.BLUE_HI,
+  CUREULEAN_QUILL: PushLEDColor.BLUE_HI,
+  TORY_SHAKESPEARE: PushLEDColor.BLUE_HI,
+  EMERALD_TIBER_DARK: PushLEDColor.GREEN_HI,
+  //neon
+  YELLOW_BUNKER: PushLEDColor.YELLOW_HI,
+  MERCURY_RED_ORANGE: PushLEDColor.RED_HI,
+  FLUSH_ORANGE_NERO: PushLEDColor.ORANGE_HI,
+  LAS_PALAMAS_MOON_MIST: PushLEDColor.YELLOW_HI,
+  BLUE_RIBBON_VULCAN: PushLEDColor.BLUE_HI,
 };
 
 export const HSLA_COLORS: Readonly<Record<string, HslaColor>> = {
