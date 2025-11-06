@@ -1,17 +1,16 @@
 import p5 from 'p5';
-import { GridModule, GridParams } from './grid.types';
+import { GridModule, GridParams, GRID_METHOD } from './grid.types';
 import { GridCalculator } from './grid.calculator';
 import { GridRenderer } from './grid.renderer';
 import { setRandomDimensions } from './grid.utils';
 import CubicBezier from '@thednp/bezier-easing';
 import { GRID_CONFIG } from '../config/grid.config';
+import { EASE_TYPE } from '../types/types';
 
 export class Grid {
   private modules: GridModule[][] = [];
   private calculator: GridCalculator;
   private renderer: GridRenderer;
-  private randomColumnWidths: number[] = [];
-  private randomRowHeights: number[] = [];
   private params: GridParams;
 
   readonly INITIAL_SHAPE_INDEX = 0;
@@ -65,8 +64,8 @@ export class Grid {
 
   updateRandomDimensions(): void {
     const dims = setRandomDimensions(this.params.tilesX, this.params.tilesY);
-    this.randomColumnWidths = dims.columnWidths;
-    this.randomRowHeights = dims.rowHeights;
+    this.params.randomColumnWidths = dims.columnWidths;
+    this.params.randomRowHeights = dims.rowHeights;
   }
 
   calculate(p: p5, time: number): void {
@@ -106,6 +105,20 @@ export class Grid {
       const current = this.modules[row][col].shapeIndex || 0;
       this.modules[row][col].shapeIndex = (current + 1) % this.AMOUNT_OF_SHAPES;
     }
+  }
+
+  cycleGridMethod(): void {
+    const methods = Object.values(GRID_METHOD).filter((method) => typeof method === 'number');
+    const currentIndex = methods.indexOf(this.params.method);
+    const nextIndex = (currentIndex + 1) % methods.length;
+    this.params.method = methods[nextIndex];
+  }
+
+  cycleShapingFunction(): void {
+    const easeTypes = Object.values(EASE_TYPE).filter((ease) => typeof ease === 'number');
+    const currentIndex = easeTypes.indexOf(this.params.easeType);
+    const nextIndex = (currentIndex + 1) % easeTypes.length;
+    this.params.easeType = easeTypes[nextIndex];
   }
 
   getTilesX(): number {

@@ -85,10 +85,10 @@ export class PushController {
     //handle left knobs and buttons
     switch (controllerNumber) {
       case PushButtonMidiCC.KNOB_LEFT_1:
-        this.cycleGridMethod();
+        this.grid.cycleGridMethod();
         break;
       case PushButtonMidiCC.KNOB_LEFT_2:
-        this.cycleShapingFunction();
+        this.grid.cycleShapingFunction();
         break;
       case PushButtonMidiCC.NEW:
         GRID_CONFIG.shouldSetButtonsToInitialShapeindex = !GRID_CONFIG.shouldSetButtonsToInitialShapeindex;
@@ -173,20 +173,6 @@ export class PushController {
     } else {
       this.setButtonLED(noteNumber, PushLEDColor.BLACK, false);
     }
-  }
-
-  private cycleGridMethod(): void {
-    const methods = Object.values(GRID_METHOD).filter((method) => typeof method === 'number');
-    const currentIndex = methods.indexOf(GRID_CONFIG.method);
-    const nextIndex = (currentIndex + 1) % methods.length;
-    GRID_CONFIG.method = methods[nextIndex];
-  }
-
-  private cycleShapingFunction(): void {
-    const easeTypes = Object.values(EASE_TYPE).filter((ease) => typeof ease === 'number');
-    const currentIndex = easeTypes.indexOf(GRID_CONFIG.easeType);
-    const nextIndex = (currentIndex + 1) % easeTypes.length;
-    GRID_CONFIG.easeType = easeTypes[nextIndex];
   }
 
   setButtonLED(buttonId: number, color: PushLEDColor, on = true): void {
