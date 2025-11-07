@@ -31,6 +31,6 @@ export class AudioSynth {
   toggleMute() {
     this.isMuted = !this.isMuted;
     if (this.isMuted == false) this.synth.volume.value = 1.0; //db
-    else this.synth.volume.value = -32.0;
+    else this.synth.volume.value = -64.0;
   }
 }
