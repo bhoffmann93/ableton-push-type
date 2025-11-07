@@ -4,7 +4,7 @@ import { PushLEDColor } from '../types/push.types';
 export const PUSH_CONFIG: MidiConfig = {
   deviceName: 'Ableton Push User Port',
   defaultLEDColor: PushLEDColor.BLUE_HI,
-  useColorPairLEDColor: true,
+  useColorPairLEDColor: true, //false == use defaultLEDColor
 };
 
 export const PUSH_BUTTON_RANGE = {

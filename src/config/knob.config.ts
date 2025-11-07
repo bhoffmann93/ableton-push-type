@@ -5,7 +5,7 @@ import { KnobConfig } from '../midi';
 export const KNOB_CONFIGS: KnobConfig[] = [
   {
     label: 'Colors',
-    increment: 0.125,
+    increment: 0.125 / 2.0,
     min: 0,
     max: Object.keys(COLOR_PAIRS).length - 1,
     initialValue: Object.keys(COLOR_PAIRS).findIndex((key) => COLOR_PAIRS[key] === GRID_CONFIG.colorPair),

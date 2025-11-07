@@ -91,6 +91,26 @@ export class Grid {
     return this.modules[row]?.[col];
   }
 
+  getModulesCoordsByShapeindex(shapeIndex: number) {
+    const coords: { r: number; c: number }[] = [];
+    for (let r = 0; r < this.modules.length; r++) {
+      for (let c = 0; c < this.modules[r].length; c++) {
+        if (this.modules[r][c].shapeIndex === shapeIndex) coords.push({ r, c });
+      }
+    }
+    return coords;
+  }
+
+  getModulesCoordsExcludingShapeIndex(shapeIndex: number) {
+    const coords: { r: number; c: number }[] = [];
+    for (let r = 0; r < this.modules.length; r++) {
+      for (let c = 0; c < this.modules[r].length; c++) {
+        if (this.modules[r][c].shapeIndex !== shapeIndex) coords.push({ r, c });
+      }
+    }
+    return coords;
+  }
+
   setModuleShapeIndex(row: number, col: number, shapeIndex: number): void {
     if (this.modules[row]?.[col]) {
       this.modules[row][col].shapeIndex = shapeIndex;

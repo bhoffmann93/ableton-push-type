@@ -13,7 +13,7 @@ export class PushController extends EventTarget {
   private grid: Grid;
   private audioSynth: AudioSynth | null;
   private knobs: Knob[] = [];
-  private shouldResetModuleButtons = false;
+  private resetModuleButtonFlag = false;
 
   constructor(grid: Grid, audioSynth: AudioSynth | null) {
     super();
@@ -100,7 +100,7 @@ export class PushController extends EventTarget {
         );
         break;
       case PushButtonMidiCC.NEW:
-        this.shouldResetModuleButtons = !this.shouldResetModuleButtons;
+        this.resetModuleButtonFlag = !this.resetModuleButtonFlag;
         this.dispatchEvent(
           new CustomEvent('flash', {
             detail: { buttonId: 'new-btn' },
@@ -152,6 +152,7 @@ export class PushController extends EventTarget {
     switch (knob.config.label) {
       case 'Colors':
         this.grid.setColorPair(knob.getValue());
+        this.updateActiveModulesButtonLEDColor();
         break;
       case 'Alley X':
         this.grid.setAlleyX(knob.getValue());
@@ -176,11 +177,12 @@ export class PushController extends EventTarget {
     const noteNumber = e.data[1];
     const midiNote = webmidi.Utilities.buildNote(noteNumber).identifier;
 
-    if (noteNumber >= PUSH_BUTTON_RANGE.min && noteNumber <= PUSH_BUTTON_RANGE.max) {
-      const row = 7 - Math.floor((noteNumber - PUSH_BUTTON_RANGE.min) / 8);
-      const col = (noteNumber - PUSH_BUTTON_RANGE.min) % 8;
+    const isPushGridButton = noteNumber >= PUSH_BUTTON_RANGE.min && noteNumber <= PUSH_BUTTON_RANGE.max;
+    if (isPushGridButton) {
+      const buttonRow = 7 - Math.floor((noteNumber - PUSH_BUTTON_RANGE.min) / 8);
+      const buttonCol = (noteNumber - PUSH_BUTTON_RANGE.min) % 8;
 
-      this.handleGridButtonPress(row, col, noteNumber);
+      this.handleGridButtonPress(buttonRow, buttonCol, noteNumber);
       this.audioSynth?.playNote(midiNote, '16n');
     }
   }
@@ -189,8 +191,8 @@ export class PushController extends EventTarget {
     const module = this.grid.getModule(row, col);
     if (!module) return;
 
-    // Cycle through shapes
-    if (this.shouldResetModuleButtons) {
+    // set shape
+    if (this.resetModuleButtonFlag) {
       this.grid.setModuleShapeIndex(row, col, this.grid.INITIAL_SHAPE_INDEX);
     } else {
       this.grid.cycleShapeIndex(row, col);
@@ -198,41 +200,57 @@ export class PushController extends EventTarget {
 
     // Update LED
     const updatedModule = this.grid.getModule(row, col);
-    if (updatedModule && updatedModule.shapeIndex !== this.grid.INITIAL_SHAPE_INDEX) {
-      let ledColor = PUSH_CONFIG.defaultLEDColor;
+    const shouldSetActiveLEDColor = updatedModule && updatedModule.shapeIndex !== this.grid.INITIAL_SHAPE_INDEX;
+    if (shouldSetActiveLEDColor) {
+      const ledColor = this.getLEDColorFromColorPair();
+      this.activateButtonLED(noteNumber, ledColor);
+    } else {
+      this.deactivateButtonLED(noteNumber);
+    }
+  }
 
-      if (PUSH_CONFIG.useColorPairLEDColor) {
-        const currentPair = this.grid.getColorPair();
-        const colorPairName = Object.keys(COLOR_PAIRS).find(
-          (key) =>
-            (COLOR_PAIRS[key][0] === currentPair[0] && COLOR_PAIRS[key][1] === currentPair[1]) ||
-            (COLOR_PAIRS[key][0] === currentPair[1] && COLOR_PAIRS[key][1] === currentPair[0])
-        );
+  private getLEDColorFromColorPair() {
+    let ledColor = PUSH_CONFIG.defaultLEDColor;
 
-        if (colorPairName && COLOR_PAIR_PUSH_LED_MAP[colorPairName]) {
-          ledColor = COLOR_PAIR_PUSH_LED_MAP[colorPairName];
-        } else {
-          console.warn(`No LED mapping for color pair: ${colorPairName}, using default`);
-        }
+    if (PUSH_CONFIG.useColorPairLEDColor) {
+      const currentPair = this.grid.getColorPair();
+      const colorPairName = Object.keys(COLOR_PAIRS).find(
+        (key) =>
+          (COLOR_PAIRS[key][0] === currentPair[0] && COLOR_PAIRS[key][1] === currentPair[1]) ||
+          (COLOR_PAIRS[key][0] === currentPair[1] && COLOR_PAIRS[key][1] === currentPair[0])
+      );
+
+      if (colorPairName && COLOR_PAIR_PUSH_LED_MAP[colorPairName]) {
+        ledColor = COLOR_PAIR_PUSH_LED_MAP[colorPairName];
+      } else {
+        console.warn(`No LED mapping for color pair: ${colorPairName}, using default`);
       }
-
-      this.setButtonLED(noteNumber, ledColor, true);
-    } else {
-      this.setButtonLED(noteNumber, PushLEDColor.BLACK, false);
     }
+    return ledColor;
   }
 
-  setButtonLED(buttonId: number, color: PushLEDColor, on = true): void {
+  private updateActiveModulesButtonLEDColor(): void {
+    const activeModuleCoords = this.grid.getModulesCoordsExcludingShapeIndex(this.grid.INITIAL_SHAPE_INDEX);
+
+    activeModuleCoords.forEach((coords) => {
+      const { c, r } = coords;
+      const noteNumber = PUSH_BUTTON_RANGE.min + (7 - r) * 8 + c;
+      const ledColor = this.getLEDColorFromColorPair();
+      this.activateButtonLED(noteNumber, ledColor);
+    });
+  }
+
+  private activateButtonLED(noteNumber: number, color: PushLEDColor) {
     if (!this.midiOutput) return;
-
-    if (on) {
-      this.midiOutput.sendNoteOn(buttonId, { rawAttack: color, channels: 1 });
-    } else {
-      this.midiOutput.sendNoteOff(buttonId, { channels: 1 });
-    }
+    this.midiOutput.sendNoteOn(noteNumber, { rawAttack: color, channels: 1 });
   }
 
-  setAllButtonsOff(): void {
+  private deactivateButtonLED(noteNumber: number) {
+    if (!this.midiOutput) return;
+    this.midiOutput.sendNoteOff(noteNumber, { channels: 1 });
+  }
+
+  private setAllButtonsOff() {
     if (!this.midiOutput) return;
 
     for (let i = PUSH_BUTTON_RANGE.min; i <= PUSH_BUTTON_RANGE.max; i++) {
@@ -240,24 +258,7 @@ export class PushController extends EventTarget {
     }
   }
 
-  getMidiData(): MidiData {
-    return {
-      knob1: this.knobs[0].getValue(),
-      knob2: this.knobs[1].getValue(),
-      knob3: this.knobs[2].getValue(),
-      knob4: this.knobs[3].getValue(),
-      knob5: this.knobs[4].getValue(),
-      knob6: this.knobs[5].getValue(),
-      knob7: this.knobs[6].getValue(),
-      knob8: this.knobs[7].getValue(),
-    };
-  }
-
-  getKnobValue(knobIndex: number): number {
-    return this.knobs[knobIndex]?.getValue() ?? 0;
-  }
-
-  destroy(): void {
+  destroy() {
     if (this.midiInput) {
       this.midiInput.removeListener();
     }
