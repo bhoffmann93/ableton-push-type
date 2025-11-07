@@ -49,14 +49,8 @@ export class PushController extends EventTarget {
       console.log(`${index}: ${device.name}`);
     });
 
-    this.midiInput =
-      webmidi.WebMidi.getInputByName(PUSH_CONFIG.deviceName) ||
-      webmidi.WebMidi.getInputByName('Ableton Push 2 User Port') ||
-      null;
-    this.midiOutput =
-      webmidi.WebMidi.getOutputByName(PUSH_CONFIG.deviceName) ||
-      webmidi.WebMidi.getOutputByName('Ableton Push 2 User Port') ||
-      null;
+    this.midiInput = webmidi.WebMidi.getInputByName(PUSH_CONFIG.deviceName) || null;
+    this.midiOutput = webmidi.WebMidi.getOutputByName(PUSH_CONFIG.deviceName) || null;
 
     if (!this.midiInput || !this.midiOutput) {
       console.warn(`Could not find device: ${PUSH_CONFIG.deviceName}`);
