@@ -7,6 +7,7 @@ import CubicBezier from '@thednp/bezier-easing';
 import { GRID_CONFIG } from '../config/grid.config';
 import { EASE_TYPE } from '../types/types';
 import { COLOR_PAIRS } from '../constants/color.constants';
+import { HexPair } from '../types/color.types';
 
 export class Grid {
   private modules: GridModule[][] = [];
@@ -132,7 +133,7 @@ export class Grid {
   }
 
   setColorPair(index: number): void {
-    this.colorPairIndex = index;
+    this.colorPairIndex = Math.round(index);
     this.updateColors();
   }
 
@@ -172,6 +173,10 @@ export class Grid {
 
   getEaseType(): EASE_TYPE {
     return this.params.easeType;
+  }
+
+  getColorPair(): HexPair {
+    return [this.params.primaryColor, this.params.secondaryColor];
   }
 
   getTilesX(): number {

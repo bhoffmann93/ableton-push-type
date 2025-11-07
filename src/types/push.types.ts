@@ -31,6 +31,7 @@ export interface KnobConfig {
   min: number;
   max: number;
   initialValue: number;
+  shouldRound?: boolean;
 }
 
 //https://github.com/Ableton/push-interface/blob/main/doc/AbletonPush2MIDIDisplayInterface.asc#MIDI%20Mapping
