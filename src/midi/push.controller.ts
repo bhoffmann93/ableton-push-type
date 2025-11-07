@@ -2,12 +2,10 @@ import * as webmidi from 'webmidi';
 import { MidiData, PushKnobCCMapping, PushButtonMidiCC, PushLEDColor } from '../types/push.types';
 import { PUSH_CONFIG, PUSH_BUTTON_RANGE, MIDI_CHANNELS } from '../config/push.config';
 import { Grid } from '../grid/grid';
-import { GRID_CONFIG } from '../config/grid.config';
 import { AudioSynth } from '../audio/audiosynth';
 import { COLOR_PAIRS, COLOR_PAIR_PUSH_LED_MAP } from '../constants/color.constants';
 import { Knob } from './push.knob';
 import { KNOB_CONFIGS } from '../config/knob.config';
-import { HexPair } from '../types/color.types';
 
 export class PushController extends EventTarget {
   private midiInput: webmidi.Input | null = null;
@@ -167,7 +165,7 @@ export class PushController extends EventTarget {
       new CustomEvent('knobChange', {
         detail: {
           knobIndex: knob.id + 1,
-          value: knob.getValue(),
+          value: knob.config?.shouldRound ?? false ? Math.round(knob.getValue()) : knob.getValue(),
           label: knob.config.label,
         },
       })

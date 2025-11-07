@@ -133,7 +133,7 @@ export class Grid {
   }
 
   setColorPair(index: number): void {
-    this.colorPairIndex = index;
+    this.colorPairIndex = Math.round(index);
     this.updateColors();
   }
 
