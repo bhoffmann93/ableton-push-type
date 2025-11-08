@@ -13,7 +13,7 @@ export class AudioSynth {
   playNote(note: string, duration = '8n'): void {
     this.synth.triggerAttackRelease(note, duration);
 
-    const now = Tone.now();
+    // const now = Tone.now();
     // const dur = 0.1; //seconds
     // this.synth.triggerAttack(note, now);
 
