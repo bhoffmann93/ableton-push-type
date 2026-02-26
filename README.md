@@ -1,19 +1,11 @@
-# push-tool
+# ableton-push-type
 
-deploy https://push-tool.netlify.app/
+An early prototype of an interface for modular design. Originally a MIDI controller for Ableton, Push is reimagined as a tactile design device where users cycle through modules to create illustrations, icons, and letterforms. Using both hands, it explores design beyond mouse and keyboard.
 
-Starter for a [p5.js](https://p5js.org/) project using
+The tool runs on a custom grid algorithm using shaping functions and is built with p5js HTML Canvas and the WebMIDI API.
 
-- p5 in [instance mode](https://p5js.org/examples/instance-mode-instantiation.html)
-- [Vite](https://vitejs.dev/) - build tool
-- [TypeScript](https://www.typescriptlang.org/) - language
-
-## Start a new project
-
-1. Optional: On this repo's GitHub page, click "Use this template" to create your own repo
-2. Clone the repo locally
-3. `cd` into repo's directory
-4. `npm i`
+Deploy https://push-tool.netlify.app/
+[Video Demonstration](https://www.youtube.com/watch?v=qIMF-jOBgYc)
 
 ## Development
 
@@ -29,5 +21,5 @@ After starting a project...
 See https://github.com/Ableton/push-interface/blob/main/doc/AbletonPush2MIDIDisplayInterface.asc#MIDI%20Mapping for Midi Mapping
 
 1. Connect Push
-2. Push Ableton Push in User Mode
+2. Set Ableton Push in User Mode
 3. Start the App
