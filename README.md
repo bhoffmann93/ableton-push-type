@@ -12,7 +12,7 @@ Color Palettes from [Pigment](https://pigment.shapefactory.co/)
 
 ## Demo
 
-![Demo](push_demo.gif)
+![Demo](static/img/push_demo.gif)
 
 ---
 
