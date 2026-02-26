@@ -45,10 +45,6 @@ export class PushController extends EventTarget {
       return;
     }
 
-    webmidi.WebMidi.inputs.forEach((device, index) => {
-      console.log(`${index}: ${device.name}`);
-    });
-
     this.midiInput = webmidi.WebMidi.getInputByName(PUSH_CONFIG.deviceName) || null;
     this.midiOutput = webmidi.WebMidi.getOutputByName(PUSH_CONFIG.deviceName) || null;
 
@@ -58,8 +54,6 @@ export class PushController extends EventTarget {
     }
 
     this.setAllButtonsOff();
-    console.log('MIDI Input:', this.midiInput.name);
-    console.log('MIDI Output:', this.midiOutput.name);
   }
 
   private setupListeners(): void {

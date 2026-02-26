@@ -1,4 +1,3 @@
-// @ts-nocheck
 import p5 from 'p5';
 import './style.css';
 import { getDateAndTimeString } from './utils/utils';
@@ -24,7 +23,6 @@ async function main() {
   audioToggleButton?.addEventListener('click', async () => {
     if (audioSynth == null) {
       await Tone.start();
-      console.log('🎼 Tone started ');
       audioSynth = new AudioSynth();
       pushController.setAudioSynth(audioSynth);
     } else {
@@ -62,11 +60,7 @@ async function main() {
   document.addEventListener('keydown', (e) => {
     if (e.key === 's') {
       const date = getDateAndTimeString();
-      sketch.saveCanvas((sketch as any).canvas, 'grid_' + date, 'png');
-    }
-
-    if (e.key === 'd') {
-      // debug = !debug;
+      sketch.saveCanvas((sketch as p5 & { canvas: HTMLCanvasElement }).canvas, 'grid_' + date, 'png');
     }
 
     if (e.key === ' ') {

@@ -28,10 +28,6 @@ export class GridCalculator {
         const aspect = tileWo / tileHo;
 
         switch (params.method) {
-          // case GRID_METHOD.Random:
-          //   eased.w = isAlley(iX) ? params.alleyX : params.randomColumnWidths[iX];
-          //   eased.h = isAlley(iY) ? params.alleyX * aspect : params.randomRowHeights[iY];
-          //   break;
           case GRID_METHOD.StaticAlley:
             eased.w = isAlley(iX) ? params.alleyX : 1;
             eased.h = isAlley(iY) ? params.alleyX * aspect : 1;
@@ -46,10 +42,8 @@ export class GridCalculator {
             eased.h = isAlley(iY) ? params.alleyY : easedOut.h;
             break;
           case GRID_METHOD.Bezier:
-            //@ts-ignore
-            eased.w = clamp(peakify(w, params.easeCubicBezierX), 0, 1);
-            //@ts-ignore
-            eased.h = clamp(peakify(h, params.easeCubicBezierY), 0, 1);
+            eased.w = clamp(peakify(w, params.easeCubicBezierX as unknown as (x: number) => number), 0, 1);
+            eased.h = clamp(peakify(h, params.easeCubicBezierY as unknown as (x: number) => number), 0, 1);
             break;
           case GRID_METHOD.Wave:
             const freqX = 5;
