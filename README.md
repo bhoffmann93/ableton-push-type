@@ -18,6 +18,7 @@ Color Palettes from [Pigment](https://pigment.shapefactory.co/)
 
 ## Tech Stack
 
+|                |     
 | -------------- | --------------------------------------------------------------------------------------------------------------------- |
 | **Rendering** | [p5.js](https://p5js.org/) on HTML Canvas |
 | **Language** | TypeScript |
