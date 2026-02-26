@@ -18,13 +18,11 @@ Color Palettes from [Pigment](https://pigment.shapefactory.co/)
 
 ## Tech Stack
 
-|                |     
-| -------------- | --------------------------------------------------------------------------------------------------------------------- |
-| **Rendering** | [p5.js](https://p5js.org/) on HTML Canvas |
-| **Language** | TypeScript |
-| **Build tool** | [Vite](https://vitejs.dev/) |
-| **Audio** | [Tone.js](https://tonejs.github.io/) |
-| **MIDI** | [WebMIDI API](https://developer.mozilla.org/en-US/docs/Web/API/Web_MIDI_API) via [webmidi.js](https://webmidijs.org/) |
+- **Rendering:** [p5.js](https://p5js.org/)
+- **Audio:** [Tone.js](https://tonejs.github.io/)
+- **MIDI:** [webmidi.js](https://webmidijs.org/)
+- **Language:** TypeScript
+- **Build tool:** [Vite](https://vitejs.dev/)
 
 ---
 
