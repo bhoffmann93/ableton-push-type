@@ -1,6 +1,6 @@
 # Ableton Push Type
 
-A prototype modular graphics tool controlled by Ableton Push – buttons cycle through geometric modules — to build illustrations, icons, and letterforms. Knobs drive real-time shaping functions that animate the grid as a whole.
+A prototype modular graphics tool for Ableton Push 1 – buttons cycle through geometric modules to build illustrations, icons, and letterforms. Knobs drive real-time shaping functions that animate the grid as a whole.
 
 Note: only tested with Google Chrome and Ableton Push 1. Push 2/3 are currently not supported.
 
