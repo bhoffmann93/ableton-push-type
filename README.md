@@ -4,25 +4,26 @@ A prototype modular graphics tool controlled by Ableton Push – buttons cycle t
 
 Note this project has only been tested with Google Chrome and Ableton Push 1.
 
-**[Live Demo](https://push-tool.netlify.app/)** · **[Video Demonstration](https://www.youtube.com/watch?v=qIMF-jOBgYc)**
+**[Live Project](https://push-tool.netlify.app/)** · **[Video Demonstration](https://www.youtube.com/watch?v=qIMF-jOBgYc)**
+
+Color Palettes from [Pigment](https://pigment.shapefactory.co/)
 
 ---
 
-## Screenshots / Demo
+## Demo
 
-_Add a screenshot or GIF here_
+![Demo](push_demo.gif)
 
 ---
 
 ## Tech Stack
 
-|                |                                                                                                                       |
 | -------------- | --------------------------------------------------------------------------------------------------------------------- |
-| **Rendering**  | [p5.js](https://p5js.org/) on HTML Canvas                                                                             |
-| **Language**   | TypeScript                                                                                                            |
-| **Build tool** | [Vite](https://vitejs.dev/)                                                                                           |
-| **Audio**      | [Tone.js](https://tonejs.github.io/)                                                                                  |
-| **MIDI**       | [WebMIDI API](https://developer.mozilla.org/en-US/docs/Web/API/Web_MIDI_API) via [webmidi.js](https://webmidijs.org/) |
+| **Rendering** | [p5.js](https://p5js.org/) on HTML Canvas |
+| **Language** | TypeScript |
+| **Build tool** | [Vite](https://vitejs.dev/) |
+| **Audio** | [Tone.js](https://tonejs.github.io/) |
+| **MIDI** | [WebMIDI API](https://developer.mozilla.org/en-US/docs/Web/API/Web_MIDI_API) via [webmidi.js](https://webmidijs.org/) |
 
 ---
 

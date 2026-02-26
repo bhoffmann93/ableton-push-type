@@ -54,6 +54,8 @@ export class PushController extends EventTarget {
     }
 
     this.setAllButtonsOff();
+    console.log('MIDI Input:', this.midiInput.name);
+    console.log('MIDI Output:', this.midiOutput.name);
   }
 
   private setupListeners(): void {
@@ -82,7 +84,7 @@ export class PushController extends EventTarget {
         this.dispatchEvent(
           new CustomEvent('gridMethodChange', {
             detail: { method: this.grid.getMethod() },
-          })
+          }),
         );
         break;
       case PushButtonMidiCC.KNOB_LEFT_2:
@@ -90,7 +92,7 @@ export class PushController extends EventTarget {
         this.dispatchEvent(
           new CustomEvent('easeTypeChange', {
             detail: { easeType: this.grid.getEaseType() },
-          })
+          }),
         );
         break;
       case PushButtonMidiCC.NEW:
@@ -98,7 +100,7 @@ export class PushController extends EventTarget {
         this.dispatchEvent(
           new CustomEvent('flash', {
             detail: { buttonId: 'new-btn' },
-          })
+          }),
         );
         break;
       case PushButtonMidiCC.RECORD:
@@ -107,7 +109,7 @@ export class PushController extends EventTarget {
           this.dispatchEvent(
             new CustomEvent('flash', {
               detail: { buttonId: 'record-btn' },
-            })
+            }),
           );
         }
         break;
@@ -118,7 +120,7 @@ export class PushController extends EventTarget {
           this.dispatchEvent(
             new CustomEvent('flash', {
               detail: { buttonId: 'play-btn' },
-            })
+            }),
           );
         }
         break;
@@ -160,10 +162,10 @@ export class PushController extends EventTarget {
       new CustomEvent('knobChange', {
         detail: {
           knobIndex: knob.id + 1,
-          value: knob.config?.shouldRound ?? false ? Math.round(knob.getValue()) : knob.getValue(),
+          value: (knob.config?.shouldRound ?? false) ? Math.round(knob.getValue()) : knob.getValue(),
           label: knob.config.label,
         },
-      })
+      }),
     );
   }
 
@@ -211,7 +213,7 @@ export class PushController extends EventTarget {
       const colorPairName = Object.keys(COLOR_PAIRS).find(
         (key) =>
           (COLOR_PAIRS[key][0] === currentPair[0] && COLOR_PAIRS[key][1] === currentPair[1]) ||
-          (COLOR_PAIRS[key][0] === currentPair[1] && COLOR_PAIRS[key][1] === currentPair[0])
+          (COLOR_PAIRS[key][0] === currentPair[1] && COLOR_PAIRS[key][1] === currentPair[0]),
       );
 
       if (colorPairName && COLOR_PAIR_PUSH_LED_MAP[colorPairName]) {
