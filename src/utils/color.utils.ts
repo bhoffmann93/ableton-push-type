@@ -1,8 +1,6 @@
 import p5 from 'p5';
 import { lerp, parabola, map } from './math.utils';
-//@ts-ignore
 import floatHSL2RGB from 'float-hsl2rgb';
-//@ts-ignore
 import floatRGB2HSL from 'float-rgb2hsl';
 import { HslaPair, HslaColor, RgbVec3, Rgb, Rgba } from '../types/color.types';
 

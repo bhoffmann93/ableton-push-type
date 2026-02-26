@@ -35,7 +35,6 @@ export class Grid {
       easeCubicBezierY: this.easeCubicBezierY,
       randomColumnWidths: [],
       randomRowHeights: [],
-      // colorPair: config.swapColors ? ([config.colorPair[1], config.colorPair[0]] as HexPair) : config.colorPair,
       primaryColor: config.swapColors ? config.colorPair[1] : config.colorPair[0],
       secondaryColor: config.swapColors ? config.colorPair[0] : config.colorPair[1],
       debug: config.debug,

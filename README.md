@@ -1,33 +1,98 @@
-# push-tool
+# Ableton Push Type
 
-deploy https://push-tool.netlify.app/
+A prototype modular graphics tool for Ableton Push 1 – buttons cycle through geometric modules to build illustrations, icons, and letterforms. Knobs drive real-time shaping functions that animate the grid as a whole.
 
-Starter for a [p5.js](https://p5js.org/) project using
+Note: only tested with Google Chrome and Ableton Push 1. Push 2/3 are currently not supported.
 
-- p5 in [instance mode](https://p5js.org/examples/instance-mode-instantiation.html)
-- [Vite](https://vitejs.dev/) - build tool
-- [TypeScript](https://www.typescriptlang.org/) - language
+**[Live Project](https://push-tool.netlify.app/)** · **[Video Demonstration](https://www.youtube.com/watch?v=qIMF-jOBgYc)**
 
-## Start a new project
+Color Palettes from [Pigment](https://pigment.shapefactory.co/)
 
-1. Optional: On this repo's GitHub page, click "Use this template" to create your own repo
-2. Clone the repo locally
-3. `cd` into repo's directory
-4. `npm i`
+---
 
-## Development
+## Demo
 
-After starting a project...
+![Demo](static/img/push_demo.gif)
 
-1. `npm run dev`
-2. Open `http://localhost:3000` in a browser
-3. Make edits to `src/main.ts`
-   ˘
+---
 
-# Ableton Push
+## Tech Stack
 
-See https://github.com/Ableton/push-interface/blob/main/doc/AbletonPush2MIDIDisplayInterface.asc#MIDI%20Mapping for Midi Mapping
+| -------------- | --------------------------------------------------------------------------------------------------------------------- |
+| **Rendering** | [p5.js](https://p5js.org/) on HTML Canvas |
+| **Language** | TypeScript |
+| **Build tool** | [Vite](https://vitejs.dev/) |
+| **Audio** | [Tone.js](https://tonejs.github.io/) |
+| **MIDI** | [WebMIDI API](https://developer.mozilla.org/en-US/docs/Web/API/Web_MIDI_API) via [webmidi.js](https://webmidijs.org/) |
 
-1. Connect Push
-2. Push Ableton Push in User Mode
-3. Start the App
+---
+
+## Prerequisites
+
+- **Ableton Push** (Push 1 in User Mode)
+- **Chrome or Edge** — WebMIDI is only supported in Chromium-based browsers
+- **Node.js** 18+
+
+---
+
+## Quick Start
+
+```bash
+git clone https://github.com/yourusername/ableton-push-type.git
+cd ableton-push-type
+npm install
+npm run dev
+```
+
+Open `http://localhost:3000` in Chrome or Edge.
+
+---
+
+## Hardware Setup
+
+1. Connect Ableton Push via USB
+2. Set Push to **User Mode** (hold the User button)
+3. Start the app — the grid buttons will light up when a shape is active
+
+---
+
+## Controls
+
+### Push Hardware
+
+| Control                   | Action                                                |
+| ------------------------- | ----------------------------------------------------- |
+| **Grid buttons (8×8)**    | Cycle through shapes on that cell                     |
+| **Left encoder (top)**    | Cycle grid method (Uniform / Wave / Bezier / …)       |
+| **Left encoder (second)** | Cycle shaping function (linear / sinc / parabola / …) |
+| **Knob 1**                | Cycle color pair                                      |
+| **Knob 2**                | Alley X — gap width between columns                   |
+| **Knob 3**                | Alley Y — gap width between rows                      |
+| **New button**            | Toggle reset mode — next grid press resets that cell  |
+| **Play button**           | Reset all shapes, clear all LEDs                      |
+| **Record button**         | Toggle debug overlay                                  |
+
+### Keyboard
+
+| Key     | Action             |
+| ------- | ------------------ |
+| `s`     | Save canvas as PNG |
+| `Space` | Pause animation    |
+
+### UI
+
+Click the **audio button** in the top bar to enable sound. Each grid button press triggers a MIDI note via Tone.js.
+
+---
+
+## Build
+
+```bash
+npm run build
+```
+
+---
+
+## MIDI Reference
+
+Push 2 MIDI mapping: [Ableton Push 2 MIDI & Display Interface](https://github.com/Ableton/push-interface/blob/main/doc/AbletonPush2MIDIDisplayInterface.asc)
