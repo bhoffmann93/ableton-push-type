@@ -6,18 +6,10 @@ export class AudioSynth {
 
   constructor() {
     this.synth = new Tone.Synth().toDestination();
-    // this.synth = new Tone.PolySynth().toDestination();
-    console.log('🎼 Tone Audio Synth created ');
   }
 
   playNote(note: string, duration = '8n'): void {
     this.synth.triggerAttackRelease(note, duration);
-
-    const now = Tone.now();
-    // const dur = 0.1; //seconds
-    // this.synth.triggerAttack(note, now);
-
-    // this.synth.triggerRelease(now + dur);
   }
 
   playFrequency(frequency: number, duration = 100): void {
@@ -30,7 +22,7 @@ export class AudioSynth {
 
   toggleMute() {
     this.isMuted = !this.isMuted;
-    if (this.isMuted == false) this.synth.volume.value = 1.0; //db
+    if (this.isMuted === false) this.synth.volume.value = 1.0; //db
     else this.synth.volume.value = -64.0;
   }
 }

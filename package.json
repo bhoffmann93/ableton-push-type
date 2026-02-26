@@ -2,7 +2,7 @@
   "name": "p5-template",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --open",
     "build": "tsc && vite build",
     "serve": "vite preview",
     "tsc": "tsc"

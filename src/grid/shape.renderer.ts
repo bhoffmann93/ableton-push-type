@@ -96,12 +96,6 @@ export class ShapeRenderer {
     p.strokeWeight(1.0);
     p.translate(pos.x, pos.y);
     p.rect(0, 0, tileW, tileH);
-    p.textStyle(p.NORMAL);
-    p.noStroke();
-    p.fill(255, 0, 0);
-    // p.textSize(18);
-    // p.textAlign(p.CENTER, p.CENTER);
-    // p.text(iX + ' ' + iY, tileW * 0.5, tileH * 0.5);
     p.pop();
   }
 

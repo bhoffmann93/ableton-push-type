@@ -1,7 +1,7 @@
-// @ts-nocheck
 import { parabola, sinc, clamp, step, linearPeak, peakify, peakifyInverted } from './utils/utils';
 import { easing } from 'ts-easing';
-import { EASE_TYPE, EASE_MIRROR_TYPE, GridModule } from './types/types';
+import { EASE_TYPE, EASE_MIRROR_TYPE } from './types/types';
+import { GridModule } from './grid/grid.types';
 
 export const factory = (
   xN: number,
@@ -107,12 +107,6 @@ export const factory = (
       eased = {
         w: easing.inQuart(xInput),
         h: easing.inQuart(yInput),
-      };
-      break;
-    case EASE_TYPE.inQuartAnimated:
-      eased = {
-        w: easing.inQuart(1 - xInput * t),
-        h: easing.inQuart(1 - yInput / t),
       };
       break;
     case EASE_TYPE.peak:
