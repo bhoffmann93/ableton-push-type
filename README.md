@@ -2,7 +2,7 @@
 
 A prototype modular graphics tool controlled by Ableton Push – buttons cycle through geometric modules — to build illustrations, icons, and letterforms. Knobs drive real-time shaping functions that animate the grid as a whole.
 
-Note this project has only been tested with Google Chrome and Ableton Push 1.
+Note: only tested with Google Chrome and Ableton Push 1. Push 2/3 are currently not supported.
 
 **[Live Project](https://push-tool.netlify.app/)** · **[Video Demonstration](https://www.youtube.com/watch?v=qIMF-jOBgYc)**
 
